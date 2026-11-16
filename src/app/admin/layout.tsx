@@ -30,6 +30,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               <nav className="flex gap-5 font-bold">
                 <Link href="/admin" className="hover:text-coral-deep">Pedidos</Link>
                 <Link href="/admin/products" className="hover:text-coral-deep">Productos</Link>
+                <Link href="/admin/reviews" className="hover:text-coral-deep">Reseñas</Link>
                 <Link href="/" className="inline-flex items-center gap-1 hover:text-coral-deep">
                   Ver tienda
                   <Icon name="external" size={16} />

@@ -12,7 +12,7 @@ export function LocaleSwitcher({ locale }: { locale: Locale }) {
       onChange={(e) =>
         router.push(pathname.replace(/^\/[a-z]{2}(?=\/|$)/, `/${e.target.value}`))
       }
-      className="rounded-full border-2 border-ink bg-white px-3 py-1.5 text-sm font-bold"
+      className="min-h-11 rounded-full border-2 border-ink bg-white px-3 text-sm font-bold text-ink"
     >
       {locales.map((l) => (
         <option key={l} value={l}>

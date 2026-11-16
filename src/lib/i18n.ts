@@ -4,58 +4,83 @@ const es = {
   meta: {
     title: "Crochet hecho a mano por encargo",
     description:
-      "Amigurumis, bolsos y accesorios de crochet tejidos a mano, uno a uno y por encargo. Envíos a toda Europa y pago seguro.",
+      "Amigurumis, bolsos y accesorios de crochet tejidos a mano, uno a uno y por encargo. Envíos a toda la UE y pago seguro.",
   },
-  nav: { shop: "Tienda", how: "Cómo funciona", faq: "Preguntas" },
+  /** Barra de anuncio. La tercera frase se oculta en móvil. */
+  announce: ["Envío gratis desde {amount}", "Tejido a mano por encargo", "Pago seguro"],
+  nav: {
+    label: "Menú principal",
+    shop: "Tienda",
+    reviews: "Opiniones",
+    how: "Cómo funciona",
+    faq: "Preguntas",
+  },
+  /** Duraciones: «1 día», «7 días», «5 a 15 días». */
+  days: { one: "1 día", other: "{n} días", range: "{min} a {max} días" },
   hero: {
     badge: "Hecho a mano · por encargo",
-    title: "Crochet con alma, tejido solo para ti",
+    title: "Crochet tejido a mano, solo para ti",
     subtitle:
-      "Cada pieza se teje a mano cuando la pides. Sin stock, sin prisas y con todo el color del mundo.",
-    cta: "Ver la colección",
-    cta2: "Cómo funciona",
+      "Eliges la pieza, la tejemos punto a punto y te llega a casa lista para regalar.",
+    cta: "Elegir mi pieza",
+    from: "Desde {price}",
+    ready: "Lista en {days}",
+    ships: "Envío a toda la UE",
   },
   trust: [
     "100 % hecho a mano",
-    "Tejido por encargo",
-    "Envíos a toda Europa",
+    "Tejido solo cuando lo pides",
+    "Envíos a toda la UE",
     "Pago seguro con Stripe",
   ],
   products: {
-    title: "Nuestras piezas",
-    subtitle: "Elige la tuya y nos ponemos a tejer.",
+    title: "Las más pedidas",
+    subtitle: "Elige la tuya y hoy mismo sacamos los ovillos.",
     view: "Ver pieza",
     empty: "Muy pronto, nuevas piezas.",
+    ready: "Lista en {days}",
+    bestseller: "Más vendido",
+    freeShipping: "Envío gratis",
+  },
+  reviews: {
+    title: "Lo que dicen quienes ya tienen la suya",
+    stars: "{rating} de 5 estrellas",
+    one: "{rating} · 1 opinión",
+    other: "{rating} · {count} opiniones",
   },
   how: {
-    title: "Así de fácil",
+    title: "Así llega a tus manos",
     steps: [
-      { title: "Elige tu pieza", text: "Escoge lo que más te guste y haz tu pedido en un minuto." },
-      { title: "La tejemos para ti", text: "Empezamos a tejer tu pieza a mano, punto a punto." },
-      { title: "Llega a tu casa", text: "Te la enviamos bien envuelta, lista para regalar o disfrutar." },
+      { title: "Hoy: eliges tu pieza", text: "Haces el pedido en un minuto y pagas de forma segura." },
+      { title: "{days}: la tejemos", text: "A mano, punto a punto. Cada ficha indica su plazo exacto." },
+      { title: "{days}: te llega", text: "Bien envuelta, con seguimiento y lista para regalar." },
     ],
   },
-  why: {
-    title: "Por qué te va a encantar",
-    items: [
-      { title: "Única de verdad", text: "No hay dos iguales: cada pieza sale de unas manos, no de una máquina." },
-      { title: "Materiales suaves", text: "Hilos de calidad, agradables al tacto y pensados para durar." },
-      { title: "El regalo perfecto", text: "Un detalle con historia que se nota que está hecho con cariño." },
-    ],
+  /** «Quién teje»: la sección no se muestra mientras `intro` esté vacío. */
+  maker: {
+    title: "Detrás de cada pieza hay unas manos",
+    intro: "",
+    contact: "Si quieres otro color o tienes una duda antes de pedir, escríbeme a {email}.",
   },
   faq: {
-    title: "Preguntas frecuentes",
-    items: [
-      { q: "¿Cuánto tarda mi pedido?", a: "Cada pieza se teje por encargo. En su ficha verás el plazo de elaboración; después, el envío tarda entre 2 y 7 días según el país." },
-      { q: "¿A dónde enviáis?", a: "A España, Andorra y toda la Unión Europea. El coste de envío se calcula antes de pagar." },
-      { q: "¿Puedo pedir otro color?", a: "Sí. Indícalo en las notas del pedido y te confirmamos si es posible." },
-      { q: "¿Es seguro el pago?", a: "El pago se realiza en la pasarela de Stripe. Nunca vemos ni guardamos los datos de tu tarjeta." },
-    ],
+    title: "Antes de pedir",
+    when: {
+      q: "¿Cuándo me llega?",
+      a: "Cada pieza se teje cuando la pides. En su ficha ves cuántos días tarda en estar lista; después, el envío tarda {transit} según el país.",
+    },
+    shipping: { q: "¿Cuánto cuesta el envío?", a: "{rates}. Gratis desde {free}." },
+    otherZone: "resto de la UE",
+    color: {
+      q: "¿Puedo pedir otro color?",
+      a: "Sí. Cuéntanos qué color quieres en las notas del pedido y te confirmamos si es posible.",
+    },
+    /** Pendiente del dueño: la pregunta no se muestra mientras la respuesta esté vacía. */
+    returns: { q: "¿Y si no me convence?", a: "" },
   },
   cta: {
-    title: "¿Tejemos algo para ti?",
-    text: "Elige tu pieza favorita y empezamos hoy mismo.",
-    button: "Ir a la tienda",
+    title: "¿Tejemos la tuya?",
+    text: "Si pides hoy, empezamos esta misma semana.",
+    button: "Elegir mi pieza",
   },
   product: {
     buy: "Comprar ahora",
@@ -100,7 +125,9 @@ const es = {
     order: "Pedido n.º",
     back: "Volver a la tienda",
   },
-  footer: { tagline: "Tejido a mano con mucho cariño.", rights: "Todos los derechos reservados." },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "entre el {min} y el {max}" },
+  footer: { tagline: "Tejido a mano con mucho cariño.", rights: "Todos los derechos reservados.", language: "Idioma" },
 };
 
 export type Dict = typeof es;
@@ -109,58 +136,79 @@ const ca: Dict = {
   meta: {
     title: "Ganxet fet a mà per encàrrec",
     description:
-      "Amigurumis, bosses i accessoris de ganxet teixits a mà, un a un i per encàrrec. Enviaments a tot Europa i pagament segur.",
+      "Amigurumis, bosses i accessoris de ganxet teixits a mà, un a un i per encàrrec. Enviaments a tota la UE i pagament segur.",
   },
-  nav: { shop: "Botiga", how: "Com funciona", faq: "Preguntes" },
+  announce: ["Enviament gratuït a partir de {amount}", "Teixit a mà per encàrrec", "Pagament segur"],
+  nav: {
+    label: "Menú principal",
+    shop: "Botiga",
+    reviews: "Opinions",
+    how: "Com funciona",
+    faq: "Preguntes",
+  },
+  days: { one: "1 dia", other: "{n} dies", range: "{min} a {max} dies" },
   hero: {
     badge: "Fet a mà · per encàrrec",
-    title: "Ganxet amb ànima, teixit només per a tu",
+    title: "Ganxet teixit a mà, només per a tu",
     subtitle:
-      "Cada peça es teixeix a mà quan la demanes. Sense estoc, sense presses i amb tot el color del món.",
-    cta: "Veure la col·lecció",
-    cta2: "Com funciona",
+      "Tries la peça, la teixim punt a punt i t'arriba a casa a punt per regalar.",
+    cta: "Triar la meva peça",
+    from: "Des de {price}",
+    ready: "Llesta en {days}",
+    ships: "Enviament a tota la UE",
   },
   trust: [
     "100 % fet a mà",
-    "Teixit per encàrrec",
-    "Enviaments a tot Europa",
+    "Teixit només quan el demanes",
+    "Enviaments a tota la UE",
     "Pagament segur amb Stripe",
   ],
   products: {
-    title: "Les nostres peces",
-    subtitle: "Tria la teva i ens posem a teixir.",
-    view: "Veure peça",
+    title: "Les més demanades",
+    subtitle: "Tria la teva i avui mateix traiem els cabdells.",
+    view: "Veure la peça",
     empty: "Ben aviat, noves peces.",
+    ready: "Llesta en {days}",
+    bestseller: "La més venuda",
+    freeShipping: "Enviament gratuït",
+  },
+  reviews: {
+    title: "Què en diuen els qui ja tenen la seva",
+    stars: "{rating} de 5 estrelles",
+    one: "{rating} · 1 opinió",
+    other: "{rating} · {count} opinions",
   },
   how: {
-    title: "Així de fàcil",
+    title: "Així t'arriba a les mans",
     steps: [
-      { title: "Tria la teva peça", text: "Escull el que més t'agradi i fes la comanda en un minut." },
-      { title: "La teixim per a tu", text: "Comencem a teixir la teva peça a mà, punt a punt." },
-      { title: "Arriba a casa teva", text: "Te l'enviem ben embolicada, a punt per regalar o gaudir." },
+      { title: "Avui: tries la teva peça", text: "Fas la comanda en un minut i pagues amb tota seguretat." },
+      { title: "{days}: la teixim", text: "A mà, punt a punt. Cada fitxa indica el termini exacte." },
+      { title: "{days}: t'arriba", text: "Ben embolicada, amb seguiment i a punt per regalar." },
     ],
   },
-  why: {
-    title: "Per què t'encantarà",
-    items: [
-      { title: "Única de debò", text: "No n'hi ha dues d'iguals: cada peça surt d'unes mans, no d'una màquina." },
-      { title: "Materials suaus", text: "Fils de qualitat, agradables al tacte i pensats per durar." },
-      { title: "El regal perfecte", text: "Un detall amb història que es nota que està fet amb afecte." },
-    ],
+  maker: {
+    title: "Darrere de cada peça hi ha unes mans",
+    intro: "",
+    contact: "Si vols un altre color o tens algun dubte abans de demanar, escriu-me a {email}.",
   },
   faq: {
-    title: "Preguntes freqüents",
-    items: [
-      { q: "Quant triga la meva comanda?", a: "Cada peça es teixeix per encàrrec. A la seva fitxa veuràs el termini d'elaboració; després, l'enviament triga entre 2 i 7 dies segons el país." },
-      { q: "On envieu?", a: "A Espanya, Andorra i tota la Unió Europea. El cost d'enviament es calcula abans de pagar." },
-      { q: "Puc demanar un altre color?", a: "Sí. Indica-ho a les notes de la comanda i et confirmem si és possible." },
-      { q: "És segur el pagament?", a: "El pagament es fa a la passarel·la de Stripe. Mai veiem ni guardem les dades de la teva targeta." },
-    ],
+    title: "Abans de demanar",
+    when: {
+      q: "Quan m'arriba?",
+      a: "Cada peça es teixeix quan la demanes. A la fitxa veus quants dies triga a estar llesta; després, l'enviament triga {transit} segons el país.",
+    },
+    shipping: { q: "Quant costa l'enviament?", a: "{rates}. Gratuït a partir de {free}." },
+    otherZone: "resta de la UE",
+    color: {
+      q: "Puc demanar un altre color?",
+      a: "Sí. Explica'ns quin color vols a les notes de la comanda i et confirmarem si és possible.",
+    },
+    returns: { q: "I si no em convenç?", a: "" },
   },
   cta: {
-    title: "Teixim alguna cosa per a tu?",
-    text: "Tria la teva peça preferida i comencem avui mateix.",
-    button: "Anar a la botiga",
+    title: "Teixim la teva?",
+    text: "Si la demanes avui, comencem aquesta mateixa setmana.",
+    button: "Triar la meva peça",
   },
   product: {
     buy: "Comprar ara",
@@ -205,65 +253,88 @@ const ca: Dict = {
     order: "Comanda núm.",
     back: "Tornar a la botiga",
   },
-  footer: { tagline: "Teixit a mà amb molt d'afecte.", rights: "Tots els drets reservats." },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "entre el {min} i el {max}" },
+  footer: { tagline: "Teixit a mà amb molt d'afecte.", rights: "Tots els drets reservats.", language: "Idioma" },
 };
 
 const en: Dict = {
   meta: {
     title: "Handmade crochet, made to order",
     description:
-      "Amigurumi, bags and crochet accessories made by hand, one by one and to order. Shipping across Europe and secure payment.",
+      "Crochet amigurumis, bags and accessories, handmade one at a time and made to order. Shipping across the EU and secure payment.",
   },
-  nav: { shop: "Shop", how: "How it works", faq: "FAQ" },
+  announce: ["Free shipping over {amount}", "Handmade to order", "Secure payment"],
+  nav: {
+    label: "Main menu",
+    shop: "Shop",
+    reviews: "Reviews",
+    how: "How it works",
+    faq: "FAQ",
+  },
+  days: { one: "1 day", other: "{n} days", range: "{min}–{max} days" },
   hero: {
     badge: "Handmade · made to order",
-    title: "Crochet with soul, made just for you",
+    title: "Crochet made by hand, just for you",
     subtitle:
-      "Every piece is crocheted by hand when you order it. No stock, no rush, and all the colour in the world.",
-    cta: "See the collection",
-    cta2: "How it works",
+      "You pick the piece, we crochet it stitch by stitch, and it reaches your door ready to give.",
+    cta: "Choose my piece",
+    from: "From {price}",
+    ready: "Ready in {days}",
+    ships: "Shipping across the EU",
   },
   trust: [
     "100% handmade",
-    "Made to order",
-    "Shipping across Europe",
+    "Only made once you order",
+    "Shipping across the EU",
     "Secure payment with Stripe",
   ],
   products: {
-    title: "Our pieces",
-    subtitle: "Pick yours and we'll start crocheting.",
+    title: "Most requested",
+    subtitle: "Pick yours and we'll get the yarn out today.",
     view: "View piece",
     empty: "New pieces coming soon.",
+    ready: "Ready in {days}",
+    bestseller: "Best seller",
+    freeShipping: "Free shipping",
+  },
+  reviews: {
+    title: "From people who already have theirs",
+    stars: "{rating} out of 5 stars",
+    one: "{rating} · 1 review",
+    other: "{rating} · {count} reviews",
   },
   how: {
-    title: "Easy as that",
+    title: "How it reaches you",
     steps: [
-      { title: "Pick your piece", text: "Choose your favourite and place your order in a minute." },
-      { title: "We crochet it for you", text: "We start making your piece by hand, stitch by stitch." },
-      { title: "It arrives at your door", text: "We ship it carefully wrapped, ready to gift or enjoy." },
+      { title: "Today: you pick your piece", text: "Order in a minute and pay securely." },
+      { title: "{days}: we make it", text: "By hand, stitch by stitch. Each product page shows its exact making time." },
+      { title: "{days}: it arrives", text: "Carefully wrapped, tracked and ready to give." },
     ],
   },
-  why: {
-    title: "Why you'll love it",
-    items: [
-      { title: "Truly one of a kind", text: "No two are the same: each piece comes from hands, not a machine." },
-      { title: "Soft materials", text: "Quality yarns that feel lovely and are made to last." },
-      { title: "The perfect gift", text: "A present with a story, clearly made with care." },
-    ],
+  maker: {
+    title: "Behind every piece is a pair of hands",
+    intro: "",
+    contact: "If you'd like a different colour or have a question before ordering, email me at {email}.",
   },
   faq: {
-    title: "Frequently asked questions",
-    items: [
-      { q: "How long does my order take?", a: "Every piece is made to order. Its page shows the making time; after that, delivery takes 2 to 7 days depending on the country." },
-      { q: "Where do you ship?", a: "To Spain, Andorra and the whole European Union. Shipping cost is shown before you pay." },
-      { q: "Can I ask for a different colour?", a: "Yes. Tell us in the order notes and we'll confirm whether it's possible." },
-      { q: "Is payment secure?", a: "Payment happens on Stripe's checkout. We never see or store your card details." },
-    ],
+    title: "Before you order",
+    when: {
+      q: "When will it arrive?",
+      a: "Every piece is made once you order it. Its page shows how many days it takes to make; after that, delivery takes {transit} depending on the country.",
+    },
+    shipping: { q: "How much is shipping?", a: "{rates}. Free over {free}." },
+    otherZone: "rest of the EU",
+    color: {
+      q: "Can I ask for a different colour?",
+      a: "Yes. Tell us the colour you'd like in the order notes and we'll confirm whether we can make it.",
+    },
+    returns: { q: "What if I'm not happy with it?", a: "" },
   },
   cta: {
-    title: "Shall we crochet something for you?",
-    text: "Pick your favourite piece and we'll start today.",
-    button: "Go to the shop",
+    title: "Shall we make yours?",
+    text: "Order today and we'll start on it this week.",
+    button: "Choose my piece",
   },
   product: {
     buy: "Buy now",
@@ -308,65 +379,88 @@ const en: Dict = {
     order: "Order no.",
     back: "Back to the shop",
   },
-  footer: { tagline: "Handmade with lots of love.", rights: "All rights reserved." },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "between {min} and {max}" },
+  footer: { tagline: "Handmade with lots of love.", rights: "All rights reserved.", language: "Language" },
 };
 
 const fr: Dict = {
   meta: {
     title: "Crochet fait main sur commande",
     description:
-      "Amigurumis, sacs et accessoires au crochet faits main, un par un et sur commande. Livraison dans toute l'Europe et paiement sécurisé.",
+      "Amigurumis, sacs et accessoires au crochet faits main, un par un et sur commande. Livraison dans toute l'UE et paiement sécurisé.",
   },
-  nav: { shop: "Boutique", how: "Comment ça marche", faq: "Questions" },
+  announce: ["Livraison offerte dès {amount}", "Fait main sur commande", "Paiement sécurisé"],
+  nav: {
+    label: "Menu principal",
+    shop: "Boutique",
+    reviews: "Avis",
+    how: "Comment ça marche",
+    faq: "Questions",
+  },
+  days: { one: "1 jour", other: "{n} jours", range: "{min} à {max} jours" },
   hero: {
     badge: "Fait main · sur commande",
-    title: "Du crochet avec une âme, fait rien que pour vous",
+    title: "Du crochet fait main, rien que pour vous",
     subtitle:
-      "Chaque pièce est crochetée à la main quand vous la commandez. Pas de stock, pas de précipitation, et toutes les couleurs du monde.",
-    cta: "Voir la collection",
-    cta2: "Comment ça marche",
+      "Vous choisissez la pièce, nous la crochetons maille après maille et elle arrive chez vous prête à offrir.",
+    cta: "Choisir ma pièce",
+    from: "À partir de {price}",
+    ready: "Prête en {days}",
+    ships: "Livraison dans toute l'UE",
   },
   trust: [
     "100 % fait main",
-    "Fabriqué sur commande",
-    "Livraison dans toute l'Europe",
+    "Crocheté seulement à la commande",
+    "Livraison dans toute l'UE",
     "Paiement sécurisé avec Stripe",
   ],
   products: {
-    title: "Nos pièces",
-    subtitle: "Choisissez la vôtre et nous nous mettons au crochet.",
+    title: "Les plus demandées",
+    subtitle: "Choisissez la vôtre\u00a0: on sort les pelotes dès aujourd'hui.",
     view: "Voir la pièce",
     empty: "De nouvelles pièces très bientôt.",
+    ready: "Prête en {days}",
+    bestseller: "Best-seller",
+    freeShipping: "Livraison offerte",
+  },
+  reviews: {
+    title: "Ce qu'en disent celles et ceux qui ont déjà la leur",
+    stars: "{rating} sur 5 étoiles",
+    one: "{rating} · 1 avis",
+    other: "{rating} · {count} avis",
   },
   how: {
-    title: "Simple comme tout",
+    title: "Comment elle arrive jusqu'à vous",
     steps: [
-      { title: "Choisissez votre pièce", text: "Sélectionnez votre préférée et commandez en une minute." },
-      { title: "Nous la crochetons pour vous", text: "Nous commençons votre pièce à la main, maille après maille." },
-      { title: "Elle arrive chez vous", text: "Nous l'envoyons soigneusement emballée, prête à offrir ou à savourer." },
+      { title: "Aujourd'hui\u00a0: vous choisissez votre pièce", text: "Vous commandez en une minute et payez en toute sécurité." },
+      { title: "{days}\u00a0: nous la crochetons", text: "À la main, maille après maille. Chaque fiche indique son délai exact." },
+      { title: "{days}\u00a0: elle arrive", text: "Bien emballée, avec suivi, prête à offrir." },
     ],
   },
-  why: {
-    title: "Pourquoi vous allez l'adorer",
-    items: [
-      { title: "Vraiment unique", text: "Il n'y en a pas deux pareilles : chaque pièce sort de mains, pas d'une machine." },
-      { title: "Matières douces", text: "Des fils de qualité, agréables au toucher et faits pour durer." },
-      { title: "Le cadeau parfait", text: "Une attention qui a une histoire, faite avec tendresse." },
-    ],
+  maker: {
+    title: "Derrière chaque pièce, il y a des mains",
+    intro: "",
+    contact: "Une autre couleur, une question avant de commander\u00a0? Écrivez-moi à {email}.",
   },
   faq: {
-    title: "Questions fréquentes",
-    items: [
-      { q: "Combien de temps prend ma commande ?", a: "Chaque pièce est faite sur commande. Sa fiche indique le délai de fabrication ; ensuite, la livraison prend de 2 à 7 jours selon le pays." },
-      { q: "Où livrez-vous ?", a: "En Espagne, en Andorre et dans toute l'Union européenne. Les frais de port sont indiqués avant le paiement." },
-      { q: "Puis-je demander une autre couleur ?", a: "Oui. Indiquez-le dans les notes de commande et nous vous confirmerons si c'est possible." },
-      { q: "Le paiement est-il sécurisé ?", a: "Le paiement se fait sur la page de Stripe. Nous ne voyons ni ne conservons jamais vos données bancaires." },
-    ],
+    title: "Avant de commander",
+    when: {
+      q: "Quand vais-je la recevoir\u00a0?",
+      a: "Chaque pièce est crochetée à la commande. Sa fiche indique combien de jours il faut pour la réaliser\u00a0; ensuite, la livraison prend {transit} selon le pays.",
+    },
+    shipping: { q: "Combien coûte la livraison\u00a0?", a: "{rates}. Offerte dès {free}." },
+    otherZone: "reste de l'UE",
+    color: {
+      q: "Puis-je demander une autre couleur\u00a0?",
+      a: "Oui. Indiquez la couleur souhaitée dans les notes de la commande et nous vous confirmerons si c'est possible.",
+    },
+    returns: { q: "Et si elle ne me plaît pas\u00a0?", a: "" },
   },
   cta: {
-    title: "On crochète quelque chose pour vous ?",
-    text: "Choisissez votre pièce préférée et nous commençons aujourd'hui.",
-    button: "Aller à la boutique",
+    title: "On crochète la vôtre\u00a0?",
+    text: "Commandez aujourd'hui, nous commençons dès cette semaine.",
+    button: "Choisir ma pièce",
   },
   product: {
     buy: "Acheter maintenant",
@@ -411,7 +505,9 @@ const fr: Dict = {
     order: "Commande n°",
     back: "Retour à la boutique",
   },
-  footer: { tagline: "Fait main avec beaucoup d'amour.", rights: "Tous droits réservés." },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "entre le {min} et le {max}" },
+  footer: { tagline: "Fait main avec beaucoup d'amour.", rights: "Tous droits réservés.", language: "Langue" },
 };
 
 const dicts: Record<Locale, Dict> = { es, ca, en, fr };

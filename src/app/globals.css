@@ -68,10 +68,4 @@ h3 {
   .label {
     @apply mb-1 block text-sm font-bold;
   }
-  /* Borde festoneado, como el remate de una labor de ganchillo */
-  .scallop {
-    height: 14px;
-    background: radial-gradient(circle at 12px 0, currentColor 12px, transparent 13px) repeat-x;
-    background-size: 24px 14px;
-  }
 }

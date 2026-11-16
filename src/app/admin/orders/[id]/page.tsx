@@ -37,8 +37,13 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
           <h2 className="text-2xl font-bold">Artículos</h2>
           <ul className="mt-3 divide-y-2 divide-ink/10">
             {o.order_items?.map((i) => (
-              <li key={i.id} className="flex justify-between py-2">
-                <span>{i.quantity}× {i.product_name}</span>
+              <li key={i.id} className="flex justify-between gap-4 py-2">
+                <span>
+                  {i.quantity}× {i.product_name}
+                  {i.color && (
+                    <span className="block text-sm font-bold">Color: {i.color}</span>
+                  )}
+                </span>
                 <b>{formatPrice(i.unit_price_cents * i.quantity)}</b>
               </li>
             ))}
