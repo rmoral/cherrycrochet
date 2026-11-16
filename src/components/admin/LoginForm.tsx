@@ -15,7 +15,7 @@ export function LoginForm() {
         <span className="label">Contraseña</span>
         <input name="password" type="password" required autoComplete="current-password" className="field" />
       </label>
-      {state.error && <p role="alert" className="font-bold text-coral">{state.error}</p>}
+      {state.error && <p role="alert" className="font-bold text-coral-deep">{state.error}</p>}
       <button disabled={pending} className="btn btn-primary">
         {pending ? "Entrando…" : "Entrar"}
       </button>

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Locale } from "@/lib/config";
 import { formatPrice, tr, type Product } from "@/lib/types";
+import { Icon } from "./ui/Icon";
 
 const tints = ["bg-blush", "bg-sun/30", "bg-mint/20", "bg-grape/15", "bg-sky/20"];
 
@@ -40,11 +41,12 @@ export function ProductCard({
       <div className="flex flex-1 flex-col gap-1 border-t-2 border-ink p-4">
         <h3 className="text-xl font-bold">{name}</h3>
         <div className="mt-auto flex items-center justify-between pt-2">
-          <span className="font-display text-2xl font-extrabold text-coral">
+          <span className="font-display text-2xl font-extrabold text-coral-deep">
             {formatPrice(product.price_cents, locale)}
           </span>
-          <span className="text-sm font-bold underline decoration-sun decoration-4 underline-offset-4">
-            {cta} →
+          <span className="inline-flex items-center gap-1 text-sm font-bold underline decoration-sun decoration-4 underline-offset-4">
+            {cta}
+            <Icon name="arrow-right" size={16} />
           </span>
         </div>
       </div>

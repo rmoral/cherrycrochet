@@ -6,6 +6,7 @@ import { getDict } from "@/lib/i18n";
 import { demoMode } from "@/lib/data";
 import { serviceClient } from "@/lib/supabase/admin";
 import { markOrderPaid, stripe } from "@/lib/stripe";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -40,7 +41,9 @@ export default async function Success({
 
   return (
     <div className="mx-auto max-w-xl px-4 py-20 text-center">
-      <p className="text-6xl">🎉</p>
+      <span className="mx-auto grid size-20 place-items-center rounded-full border-2 border-ink bg-mint-soft text-mint-deep">
+        <Icon name="check" size={40} strokeWidth={3} />
+      </span>
       <h1 className="mt-4 text-5xl font-extrabold">{t.title}</h1>
       {order && (
         <p className="mx-auto mt-5 w-fit rounded-full border-2 border-ink bg-sun px-5 py-1.5 font-extrabold">

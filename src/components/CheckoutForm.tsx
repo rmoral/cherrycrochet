@@ -4,6 +4,7 @@ import { createCheckout, type CheckoutState } from "@/app/actions/checkout";
 import { MAX_QTY, shippingFor, type Locale } from "@/lib/config";
 import type { Dict } from "@/lib/i18n";
 import { formatPrice } from "@/lib/types";
+import { Icon } from "./ui/Icon";
 
 export function CheckoutForm({
   locale,
@@ -57,18 +58,18 @@ export function CheckoutForm({
             type="button"
             aria-label="−"
             onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="grid size-10 place-items-center rounded-full bg-blush text-2xl font-bold"
+            className="grid size-10 place-items-center rounded-full bg-blush"
           >
-            −
+            <Icon name="minus" strokeWidth={2.8} />
           </button>
           <span className="w-6 text-center text-xl font-extrabold">{qty}</span>
           <button
             type="button"
             aria-label="+"
             onClick={() => setQty((q) => Math.min(MAX_QTY, q + 1))}
-            className="grid size-10 place-items-center rounded-full bg-sun text-2xl font-bold"
+            className="grid size-10 place-items-center rounded-full bg-sun"
           >
-            +
+            <Icon name="plus" strokeWidth={2.8} />
           </button>
           <input type="hidden" name="quantity" value={qty} />
         </div>
@@ -121,19 +122,29 @@ export function CheckoutForm({
           <dt>{t.shipping}</dt>
           <dd className="text-right font-bold">{ship === 0 ? t.free : formatPrice(ship, locale)}</dd>
           <dt className="border-t-2 border-ink/10 pt-2 font-display text-2xl font-extrabold">{t.total}</dt>
-          <dd className="border-t-2 border-ink/10 pt-2 text-right font-display text-2xl font-extrabold text-coral">
+          <dd className="border-t-2 border-ink/10 pt-2 text-right font-display text-2xl font-extrabold text-coral-deep">
             {formatPrice(subtotal + ship, locale)}
           </dd>
         </dl>
         {state.error && (
-          <p role="alert" className="mt-4 rounded-xl bg-coral/15 p-3 font-bold text-coral">
+          <p role="alert" className="mt-4 rounded-xl bg-coral/15 p-3 font-bold text-coral-deep">
             {state.error}
           </p>
         )}
         <button type="submit" disabled={pending} className="btn btn-primary mt-5 w-full text-xl">
-          {pending ? "…" : `${t.pay} →`}
+          {pending ? (
+            "…"
+          ) : (
+            <>
+              {t.pay}
+              <Icon name="arrow-right" />
+            </>
+          )}
         </button>
-        <p className="mt-3 text-center text-sm opacity-70">🔒 {t.payNote}</p>
+        <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-sm opacity-70">
+          <Icon name="lock" size={16} />
+          {t.payNote}
+        </p>
       </div>
     </form>
   );

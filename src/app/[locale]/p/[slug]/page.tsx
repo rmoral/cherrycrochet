@@ -7,6 +7,7 @@ import { getProduct, getProducts } from "@/lib/data";
 import { formatPrice, tr } from "@/lib/types";
 import { Gallery } from "@/components/Gallery";
 import { ProductCard } from "@/components/ProductCard";
+import { Icon } from "@/components/ui/Icon";
 
 export const revalidate = 60;
 
@@ -50,8 +51,9 @@ export default async function ProductPage({ params }: Props) {
   return (
     <>
       <div className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16">
-        <Link href={`/${locale}#tienda`} className="text-sm font-bold underline">
-          ← {t.product.back}
+        <Link href={`/${locale}#tienda`} className="inline-flex items-center gap-1 text-sm font-bold underline">
+          <Icon name="arrow-left" size={16} />
+          {t.product.back}
         </Link>
         <div className="mt-4 grid gap-8 md:grid-cols-2 md:gap-12">
           <Gallery media={product.media} alt={name} />
@@ -61,27 +63,34 @@ export default async function ProductPage({ params }: Props) {
               <p className="mt-2 text-lg opacity-80">{tr(product.tagline, locale)}</p>
             )}
             <p className="mt-4 flex items-baseline gap-3">
-              <span className="font-display text-5xl font-extrabold text-coral">{price}</span>
+              <span className="font-display text-5xl font-extrabold text-coral-deep">{price}</span>
               {product.compare_at_cents && product.compare_at_cents > product.price_cents && (
                 <s className="text-xl opacity-50">{formatPrice(product.compare_at_cents, locale)}</s>
               )}
             </p>
-            <p className="mt-4 inline-block rounded-full border-2 border-ink bg-sun px-4 py-1.5 text-sm font-extrabold">
-              🧶 {t.product.leadTime.replace("{days}", String(product.lead_time_days))}
+            <p className="mt-4 inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-sun px-4 py-1.5 text-sm font-extrabold">
+              <Icon name="yarn" size={18} strokeWidth={2.4} />
+              {t.product.leadTime.replace("{days}", String(product.lead_time_days))}
             </p>
             <Link href={buyHref} className="btn btn-primary mt-6 hidden w-full text-xl md:flex">
               {t.product.buy}
             </Link>
             <ul className="mt-6 grid gap-2 text-sm font-bold">
-              <li>✓ {t.product.handmade}</li>
-              <li>
-                ✓{" "}
+              <li className="flex items-center gap-2">
+                <Icon name="check" strokeWidth={3} className="text-mint-deep" />
+                {t.product.handmade}
+              </li>
+              <li className="flex items-center gap-2">
+                <Icon name="check" strokeWidth={3} className="text-mint-deep" />
                 {t.product.freeShipping.replace(
                   "{amount}",
                   formatPrice(shipping.freeFromCents, locale),
                 )}
               </li>
-              <li>✓ {t.product.secure}</li>
+              <li className="flex items-center gap-2">
+                <Icon name="check" strokeWidth={3} className="text-mint-deep" />
+                {t.product.secure}
+              </li>
             </ul>
             <h2 className="mt-8 text-2xl font-bold">{t.product.description}</h2>
             <div className="mt-2 whitespace-pre-line text-lg leading-relaxed">
@@ -104,7 +113,7 @@ export default async function ProductPage({ params }: Props) {
 
       {/* Barra de compra fija en móvil */}
       <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-4 border-t-2 border-ink bg-cream px-4 py-3 md:hidden">
-        <span className="font-display text-3xl font-extrabold text-coral">{price}</span>
+        <span className="font-display text-3xl font-extrabold text-coral-deep">{price}</span>
         <Link href={buyHref} className="btn btn-primary flex-1">
           {t.product.buy}
         </Link>

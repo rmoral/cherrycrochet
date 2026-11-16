@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Media } from "@/lib/types";
+import { Icon } from "./ui/Icon";
 
 export function Gallery({ media, alt }: { media: Media[]; alt: string }) {
   const [i, setI] = useState(0);
@@ -41,11 +42,13 @@ export function Gallery({ media, alt }: { media: Media[]; alt: string }) {
               onClick={() => setI(idx)}
               aria-label={`${alt} ${idx + 1}`}
               className={`relative size-16 shrink-0 overflow-hidden rounded-xl border-2 ${
-                idx === i ? "border-coral" : "border-ink/20"
+                idx === i ? "border-coral-deep" : "border-ink/20"
               }`}
             >
               {m.type === "video" ? (
-                <span className="grid size-full place-items-center bg-ink text-white">▶</span>
+                <span className="grid size-full place-items-center bg-ink text-white">
+                  <Icon name="play" />
+                </span>
               ) : (
                 <Image src={m.url} alt="" fill sizes="64px" unoptimized={m.url.endsWith(".svg")} className="object-cover" />
               )}

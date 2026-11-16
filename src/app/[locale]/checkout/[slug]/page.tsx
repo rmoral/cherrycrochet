@@ -34,7 +34,7 @@ export default async function CheckoutPage({
         )}
         <div>
           <p className="font-display text-xl font-bold">{tr(product.name, locale)}</p>
-          <p className="font-bold text-coral">{formatPrice(product.price_cents, locale)}</p>
+          <p className="font-bold text-coral-deep">{formatPrice(product.price_cents, locale)}</p>
           <p className="text-sm opacity-70">
             {t.product.leadTime.replace("{days}", String(product.lead_time_days))}
           </p>

@@ -6,13 +6,14 @@ import { getDict } from "@/lib/i18n";
 import { getProducts } from "@/lib/data";
 import { tr } from "@/lib/types";
 import { ProductCard } from "@/components/ProductCard";
+import { Icon, type IconName } from "@/components/ui/Icon";
 
 export const revalidate = 60;
 
 const stepColors = ["bg-sun", "bg-mint", "bg-coral"];
-const stepIcons = ["👆", "🧶", "📦"];
+const stepIcons: IconName[] = ["pointer", "yarn", "box"];
 const whyColors = ["bg-blush", "bg-sun/40", "bg-mint/25"];
-const whyIcons = ["✨", "☁️", "🎁"];
+const whyIcons: IconName[] = ["sparkle", "cloud", "gift"];
 
 export default async function Landing({
   params,
@@ -73,7 +74,10 @@ export default async function Landing({
       <section className="border-y-2 border-ink bg-grape text-white">
         <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-x-4 gap-y-2 px-4 py-4 text-center text-sm font-bold md:grid-cols-4 md:text-base">
           {t.trust.map((item) => (
-            <li key={item}>✓ {item}</li>
+            <li key={item} className="flex items-center justify-center gap-1.5">
+              <Icon name="check" size={18} strokeWidth={3} />
+              {item}
+            </li>
           ))}
         </ul>
       </section>
@@ -100,8 +104,8 @@ export default async function Landing({
           <ol className="mt-8 grid gap-6 md:grid-cols-3">
             {t.how.steps.map((s, i) => (
               <li key={s.title} className="card p-6">
-                <span className={`grid size-14 place-items-center rounded-full border-2 border-ink text-2xl ${stepColors[i]}`}>
-                  {stepIcons[i]}
+                <span className={`grid size-14 place-items-center rounded-full border-2 border-ink ${stepColors[i]}`}>
+                  <Icon name={stepIcons[i]} size={26} />
                 </span>
                 <h3 className="mt-4 text-2xl font-bold">
                   {i + 1}. {s.title}
@@ -119,7 +123,7 @@ export default async function Landing({
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {t.why.items.map((w, i) => (
             <div key={w.title} className={`rounded-3xl border-2 border-ink p-6 ${whyColors[i]}`}>
-              <span className="text-3xl">{whyIcons[i]}</span>
+              <Icon name={whyIcons[i]} size={32} />
               <h3 className="mt-3 text-2xl font-bold">{w.title}</h3>
               <p className="mt-2">{w.text}</p>
             </div>
@@ -135,7 +139,7 @@ export default async function Landing({
             <details key={f.q} className="group rounded-2xl border-2 border-ink bg-white p-5">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-extrabold">
                 {f.q}
-                <span className="text-coral transition-transform group-open:rotate-45">＋</span>
+                <Icon name="plus" className="text-coral-deep transition-transform group-open:rotate-45" />
               </summary>
               <p className="mt-3">{f.a}</p>
             </details>

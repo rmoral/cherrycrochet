@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/auth";
 import { serviceClient } from "@/lib/supabase/admin";
 import { updateOrder } from "@/app/actions/admin";
 import { formatPrice, ORDER_STATUSES, STATUS_LABEL, type Order } from "@/lib/types";
+import { Icon } from "@/components/ui/Icon";
 
 const date = (v: string | null) =>
   v ? new Date(v).toLocaleString("es-ES", { dateStyle: "medium", timeStyle: "short" }) : "—";
@@ -22,7 +23,10 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
 
   return (
     <>
-      <Link href="/admin" className="text-sm font-bold underline">← Pedidos</Link>
+      <Link href="/admin" className="inline-flex items-center gap-1 text-sm font-bold underline">
+        <Icon name="arrow-left" size={16} />
+        Pedidos
+      </Link>
       <h1 className="mt-2 text-4xl font-extrabold">Pedido #{o.order_number}</h1>
       <p className="opacity-70">
         Creado: {date(o.created_at)} · Pagado: {date(o.paid_at)} · Enviado: {date(o.shipped_at)}
@@ -71,9 +75,10 @@ export default async function OrderPage({ params }: { params: Promise<{ id: stri
               href={`https://dashboard.stripe.com/payments/${o.stripe_payment_intent}`}
               target="_blank"
               rel="noopener"
-              className="mt-3 inline-block text-sm font-bold underline"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-bold underline"
             >
-              Ver pago en Stripe ↗
+              Ver pago en Stripe
+              <Icon name="external" size={16} />
             </a>
           )}
         </section>

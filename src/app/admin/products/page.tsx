@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { serviceClient } from "@/lib/supabase/admin";
 import { formatPrice, type Product } from "@/lib/types";
+import { Icon } from "@/components/ui/Icon";
 
 export default async function ProductsPage() {
   await requireAdmin();
@@ -17,7 +18,10 @@ export default async function ProductsPage() {
     <>
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-4xl font-extrabold">Productos</h1>
-        <Link href="/admin/products/new" className="btn btn-primary">+ Nuevo</Link>
+        <Link href="/admin/products/new" className="btn btn-primary">
+          <Icon name="plus" strokeWidth={2.8} />
+          Nuevo
+        </Link>
       </div>
       <div className="mt-6 flex flex-col gap-3">
         {products.length === 0 && (
