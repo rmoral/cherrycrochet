@@ -6,6 +6,7 @@ import "../globals.css";
 import { getAdmin } from "@/lib/auth";
 import { brand } from "@/lib/config";
 import { logout } from "@/app/actions/admin";
+import { Icon } from "@/components/ui/Icon";
 
 export const dynamic = "force-dynamic";
 
@@ -22,11 +23,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         {admin && (
           <header className="border-b-2 border-ink bg-white">
             <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
-              <span className="font-display text-xl font-extrabold">🧶 Back office</span>
+              <span className="flex items-center gap-2 font-display text-xl font-extrabold">
+                <Icon name="yarn" strokeWidth={2.4} />
+                Back office
+              </span>
               <nav className="flex gap-5 font-bold">
-                <Link href="/admin" className="hover:text-coral">Pedidos</Link>
-                <Link href="/admin/products" className="hover:text-coral">Productos</Link>
-                <Link href="/" className="hover:text-coral">Ver tienda ↗</Link>
+                <Link href="/admin" className="hover:text-coral-deep">Pedidos</Link>
+                <Link href="/admin/products" className="hover:text-coral-deep">Productos</Link>
+                <Link href="/" className="inline-flex items-center gap-1 hover:text-coral-deep">
+                  Ver tienda
+                  <Icon name="external" size={16} />
+                </Link>
               </nav>
               <form action={logout} className="ml-auto">
                 <button className="text-sm font-bold underline">Salir</button>

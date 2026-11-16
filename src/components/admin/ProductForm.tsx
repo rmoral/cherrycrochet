@@ -9,6 +9,7 @@ import {
 } from "@/app/actions/admin";
 import { localeNames, locales } from "@/lib/config";
 import type { Media, Product } from "@/lib/types";
+import { Icon } from "@/components/ui/Icon";
 
 export function ProductForm({ product }: { product?: Product }) {
   const [state, action, pending] = useActionState<FormState, FormData>(saveProduct, { error: null });
@@ -69,14 +70,21 @@ export function ProductForm({ product }: { product?: Product }) {
                   <img src={m.url} alt="" className="size-full object-cover" />
                 )}
                 <div className="absolute inset-x-0 bottom-0 flex justify-between bg-ink/70 px-1 text-white">
-                  <button type="button" onClick={() => move(i, -1)} aria-label="Mover antes">←</button>
-                  <button type="button" onClick={() => setMedia((x) => x.filter((_, k) => k !== i))} aria-label="Quitar">✕</button>
-                  <button type="button" onClick={() => move(i, 1)} aria-label="Mover después">→</button>
+                  <button type="button" onClick={() => move(i, -1)} aria-label="Mover antes"><Icon name="arrow-left" size={18} /></button>
+                  <button type="button" onClick={() => setMedia((x) => x.filter((_, k) => k !== i))} aria-label="Quitar"><Icon name="x" size={18} /></button>
+                  <button type="button" onClick={() => move(i, 1)} aria-label="Mover después"><Icon name="arrow-right" size={18} /></button>
                 </div>
               </div>
             ))}
             <label className="grid size-28 cursor-pointer place-items-center rounded-xl border-2 border-dashed border-ink/40 text-center text-sm font-bold hover:bg-blush">
-              {uploading ? "Subiendo…" : "+ Añadir"}
+              {uploading ? (
+                "Subiendo…"
+              ) : (
+                <span className="flex flex-col items-center gap-1">
+                  <Icon name="plus" />
+                  Añadir
+                </span>
+              )}
               <input
                 type="file"
                 accept="image/*,video/mp4,video/webm,video/quicktime"
@@ -90,7 +98,7 @@ export function ProductForm({ product }: { product?: Product }) {
               />
             </label>
           </div>
-          {uploadError && <p role="alert" className="mt-3 font-bold text-coral">{uploadError}</p>}
+          {uploadError && <p role="alert" className="mt-3 font-bold text-coral-deep">{uploadError}</p>}
         </section>
 
         <section className="card grid gap-4 p-5 sm:grid-cols-2">
@@ -148,7 +156,7 @@ export function ProductForm({ product }: { product?: Product }) {
           </details>
         ))}
 
-        {state.error && <p role="alert" className="rounded-xl bg-coral/15 p-3 font-bold text-coral">{state.error}</p>}
+        {state.error && <p role="alert" className="rounded-xl bg-coral/15 p-3 font-bold text-coral-deep">{state.error}</p>}
         <button disabled={pending || uploading} className="btn btn-primary w-fit">
           {pending ? "Guardando…" : "Guardar producto"}
         </button>
@@ -163,7 +171,7 @@ export function ProductForm({ product }: { product?: Product }) {
           className="mt-10 border-t-2 border-ink/10 pt-6"
         >
           <input type="hidden" name="id" value={product.id} />
-          <button className="text-sm font-bold text-coral underline">Eliminar producto</button>
+          <button className="text-sm font-bold text-coral-deep underline">Eliminar producto</button>
         </form>
       )}
     </>

@@ -4,11 +4,18 @@
   --color-cream: #fff7ec;
   --color-ink: #2b2140;
   --color-coral: #ff5c6c;
+  --color-coral-deep: #b3243a;
   --color-sun: #ffc83d;
+  --color-sun-deep: #b87a00;
   --color-mint: #22b8a7;
+  --color-mint-soft: #d9f4f0;
+  --color-mint-deep: #17705f;
   --color-grape: #7a55c7;
   --color-sky: #4d96ff;
   --color-blush: #ffe1e6;
+  --color-line: #efe6d8;
+  --color-muted: #5b5470;
+  --color-field: #8a8499;
   --font-display: "Baloo 2 Variable", ui-rounded, system-ui, sans-serif;
   --font-sans: "Nunito Variable", system-ui, sans-serif;
 }
@@ -46,7 +53,7 @@ h3 {
     pointer-events: none;
   }
   .btn-primary {
-    @apply bg-coral text-white;
+    @apply bg-coral text-ink;
   }
   .btn-ghost {
     @apply bg-white text-ink;
@@ -56,7 +63,7 @@ h3 {
     box-shadow: 0 5px 0 0 var(--color-ink);
   }
   .field {
-    @apply w-full rounded-xl border-2 border-ink/20 bg-white px-4 py-3 text-base outline-none focus:border-grape;
+    @apply w-full rounded-xl border-2 border-field bg-white px-4 py-3 text-base outline-none focus:border-grape;
   }
   .label {
     @apply mb-1 block text-sm font-bold;
