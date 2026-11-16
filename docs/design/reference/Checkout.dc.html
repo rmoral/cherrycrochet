@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Checkout, datos de envío, móvil</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#2B2140}a:hover{color:#B3243A}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 1900px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Nunito', system-ui, sans-serif; color: #2B2140; background: #FFF7EC; font-size: 16px; line-height: 1.5">
+
+<!-- Cabecera mínima: sin menú, para no ofrecer salidas -->
+<header style="border-bottom: 2px solid #2B2140; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<a href="Ficha.dc.html" style="display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 22px; min-height: 44px">
+<span style="width: 32px; height: 32px; border-radius: 50%; background: #FFC83D; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B2140" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M6 10q6-5 12 0M7 15q5-4 10 0"/></svg></span>
+Punto Alegre</a>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B2140" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Pago seguro</span>
+</header>
+
+<!-- Pasos -->
+<ol style="list-style: none; margin: 0; padding: 16px 16px 0; display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px">
+<li style="display: flex; align-items: center; gap: 8px"><span style="width: 28px; height: 28px; border-radius: 50%; background: #2B2140; color: #FFF7EC; display: flex; align-items: center; justify-content: center; font-size: 14px">1</span>Envío</li>
+<li aria-hidden="true" style="flex-grow: 1; height: 2px; background: #2B2140"></li>
+<li style="display: flex; align-items: center; gap: 8px; color: #5B5470"><span style="width: 28px; height: 28px; border-radius: 50%; border: 2px solid #5B5470; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 14px">2</span>Pago</li>
+</ol>
+
+<!-- Resumen siempre visible -->
+<section style="padding: 16px 16px 0">
+<div style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 20px; box-shadow: 0 4px 0 #2B2140; padding: 12px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 12px">
+<div style="flex-shrink: 0; width: 72px; height: 72px; border-radius: 14px; background: #FFE1E6; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">[FOTO]</div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; line-height: 1.25">
+<span style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 700; font-size: 19px">Pulpo amigurumi</span>
+<span style="font-size: 14px">Color: Coral</span>
+<span style="font-size: 14px; font-weight: 700">Llega entre el 24 y el 29 nov</span>
+</div>
+<span style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 22px; color: #B3243A">{{subtotal}}</span>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 2px solid #EFE6D8; padding-top: 10px">
+<span style="font-weight: 800">Cantidad</span>
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" aria-label="Quitar una unidad" onClick="{{less}}" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #2B2140; background: #FFE1E6; color: #2B2140; font-size: 24px; font-weight: 800; cursor: pointer">−</button>
+<span style="min-width: 20px; text-align: center; font-weight: 800; font-size: 19px">{{qty}}</span>
+<button type="button" aria-label="Añadir una unidad" onClick="{{more}}" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #2B2140; background: #FFC83D; color: #2B2140; font-size: 24px; font-weight: 800; cursor: pointer">+</button>
+</div>
+</div>
+<!-- Empujón al envío gratis -->
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 700">{{freeMsg}}</span>
+<div style="height: 10px; border-radius: 999px; background: #EFE6D8; border: 2px solid #2B2140; overflow: hidden"><div style="{{barStyle}}"></div></div>
+</div>
+</div>
+</section>
+
+<!-- Formulario: una sola columna, los campos justos -->
+<form style="padding: 24px 16px 0; display: flex; flex-direction: column; gap: 14px">
+<h1 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.05">¿A dónde te la enviamos?</h1>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">Email
+<input type="email" autocomplete="email" placeholder="tu@email.com" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; border: 2px solid #8A8499; border-radius: 12px; padding: 0 14px; background: #FFFFFF; color: #2B2140">
+<span style="font-weight: 400; font-size: 13px">Solo para la confirmación y el seguimiento del envío.</span></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">Nombre y apellidos
+<input type="text" autocomplete="name" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; border: 2px solid #8A8499; border-radius: 12px; padding: 0 14px; background: #FFFFFF; color: #2B2140"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">Teléfono
+<input type="tel" autocomplete="tel" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; border: 2px solid #8A8499; border-radius: 12px; padding: 0 14px; background: #FFFFFF; color: #2B2140">
+<span style="font-weight: 400; font-size: 13px">Por si el repartidor necesita localizarte.</span></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">País
+<select autocomplete="country" onChange="{{setCountry}}" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; border: 2px solid #8A8499; border-radius: 12px; padding: 0 10px; background: #FFFFFF; color: #2B2140">
+<option value="ES">España</option>
+<option value="AD">Andorra</option>
+<option value="FR">Francia</option>
+<option value="PT">Portugal</option>
+<option value="DE">Alemania</option>
+</select></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">Calle y número
+<input type="text" autocomplete="address-line1" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; border: 2px solid #8A8499; border-radius: 12px; padding: 0 14px; background: #FFFFFF; color: #2B2140"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">Piso, puerta (opcional)
+<input type="text" autocomplete="address-line2" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; border: 2px solid #8A8499; border-radius: 12px; padding: 0 14px; background: #FFFFFF; color: #2B2140"></label>
+<div style="display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">Código postal
+<input type="text" inputmode="numeric" autocomplete="postal-code" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; width: 100%; border: 2px solid #8A8499; border-radius: 12px; padding: 0 14px; background: #FFFFFF; color: #2B2140"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px">Ciudad
+<input type="text" autocomplete="address-level2" style="font: inherit; font-size: 16px; font-weight: 400; min-height: 48px; box-sizing: border-box; width: 100%; border: 2px solid #8A8499; border-radius: 12px; padding: 0 14px; background: #FFFFFF; color: #2B2140"></label>
+</div>
+<details style="border: 2px dashed #8A8499; border-radius: 12px; padding: 12px 14px"><summary style="cursor: pointer; font-weight: 800; min-height: 24px">Añadir nota o dedicatoria (opcional)</summary>
+<label style="display: flex; flex-direction: column; gap: 4px; font-weight: 800; font-size: 14px; margin-top: 10px">Nota para quien teje
+<textarea rows="3" placeholder="Es un regalo, prefiero un tono más claro…" style="font: inherit; font-size: 16px; font-weight: 400; box-sizing: border-box; border: 2px solid #8A8499; border-radius: 12px; padding: 10px 14px; background: #FFFFFF; color: #2B2140"></textarea></label>
+</details>
+</form>
+
+<!-- Totales y CTA con el importe -->
+<section style="padding: 24px 16px 20px; display: flex; flex-direction: column; gap: 12px">
+<dl style="margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; font-size: 16px">
+<dt>Subtotal</dt><dd style="margin: 0; text-align: right; font-weight: 800">{{subtotal}}</dd>
+<dt>Envío</dt><dd style="margin: 0; text-align: right; font-weight: 800">{{shipping}}</dd>
+<dt style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 24px; border-top: 2px solid #2B2140; padding-top: 8px">Total</dt><dd style="margin: 0; text-align: right; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 24px; color: #B3243A; border-top: 2px solid #2B2140; padding-top: 8px">{{total}}</dd>
+</dl>
+<button type="button" style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 21px; color: #2B2140; background: #FF5C6C; border: 2px solid #2B2140; border-radius: 999px; padding: 15px 20px; box-shadow: 0 5px 0 #2B2140; cursor: pointer">Ir al pago seguro · {{total}}</button>
+<p style="margin: 0; text-align: center; font-size: 14px">En el siguiente paso pagas en Stripe con tarjeta, Apple Pay o Google Pay. No guardamos los datos de tu tarjeta.</p>
+</section>
+
+<footer style="margin-top: auto; border-top: 2px solid #EFE6D8; padding: 16px; text-align: center; font-size: 13px">¿Dudas con tu pedido? <a href="mailto:hola@tudominio.com" style="font-weight: 800">hola@tudominio.com</a></footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1900}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { qty: 1, country: 'ES' };
+}
+renderVals() {
+const eur = (c) => (c / 100).toLocaleString('es-ES', { minimumFractionDigits: c % 100 ? 2 : 0, maximumFractionDigits: 2 }) + ' €';
+const qty = this.state.qty;
+const sub = 2400 * qty;
+const zone = this.state.country === 'ES' ? 490 : this.state.country === 'AD' ? 690 : 990;
+const ship = sub >= 6000 ? 0 : zone;
+const left = 6000 - sub;
+return {
+qty: qty,
+subtotal: eur(sub),
+shipping: ship === 0 ? 'Gratis' : eur(ship),
+total: eur(sub + ship),
+freeMsg: left > 0 ? 'Te faltan ' + eur(left) + ' para el envío gratis' : 'Tienes el envío gratis',
+barStyle: 'height: 100%; background: #22B8A7; width: ' + Math.min(100, Math.round((sub / 6000) * 100)) + '%',
+less: () => this.setState({ qty: Math.max(1, qty - 1) }),
+more: () => this.setState({ qty: Math.min(10, qty + 1) }),
+setCountry: (e) => this.setState({ country: e.target.value })
+};
+}
+}
+</script>
+</body>
+</html>

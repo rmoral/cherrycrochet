@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fff7ec;
+  --color-ink: #2b2140;
+  --color-coral: #ff5c6c;
+  --color-sun: #ffc83d;
+  --color-mint: #22b8a7;
+  --color-grape: #7a55c7;
+  --color-sky: #4d96ff;
+  --color-blush: #ffe1e6;
+  --font-display: "Baloo 2 Variable", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Nunito Variable", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.05;
+}
+
+@layer components {
+  /* Botón "pegatina": borde grueso y sombra dura */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-ink px-6 py-3 font-display text-lg font-bold transition-transform;
+    box-shadow: 0 4px 0 0 var(--color-ink);
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 0 var(--color-ink);
+  }
+  .btn:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .btn-primary {
+    @apply bg-coral text-white;
+  }
+  .btn-ghost {
+    @apply bg-white text-ink;
+  }
+  .card {
+    @apply rounded-3xl border-2 border-ink bg-white;
+    box-shadow: 0 5px 0 0 var(--color-ink);
+  }
+  .field {
+    @apply w-full rounded-xl border-2 border-ink/20 bg-white px-4 py-3 text-base outline-none focus:border-grape;
+  }
+  .label {
+    @apply mb-1 block text-sm font-bold;
+  }
+  /* Borde festoneado, como el remate de una labor de ganchillo */
+  .scallop {
+    height: 14px;
+    background: radial-gradient(circle at 12px 0, currentColor 12px, transparent 13px) repeat-x;
+    background-size: 24px 14px;
+  }
+}

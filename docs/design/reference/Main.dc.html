@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Landing de la tienda de crochet, escritorio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#2B2140}a:hover{color:#B3243A}
+</style>
+</helmet>
+<div style="font-family: 'Nunito', system-ui, sans-serif; color: #2B2140; background: #FFF7EC; font-size: 17px; line-height: 1.5">
+
+<!-- Barra de anuncio -->
+<div style="background: #2B2140; color: #FFF7EC; text-align: center; padding: 9px 16px; font-size: 14px; font-weight: 700">Envío gratis desde 60 € · Tejido a mano por encargo · Pago seguro con Stripe</div>
+
+<!-- Cabecera -->
+<header style="border-bottom: 2px solid #2B2140; background: #FFF7EC">
+<div style="max-width: 1120px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 26px">
+<span style="width: 36px; height: 36px; border-radius: 50%; background: #FFC83D; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B2140" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M6 10q6-5 12 0M7 15q5-4 10 0"/></svg></span>
+Punto Alegre</a>
+<nav style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px; font-weight: 800">
+<a href="#tienda" style="text-decoration: none">Tienda</a>
+<a href="#opiniones" style="text-decoration: none">Opiniones</a>
+<a href="#como" style="text-decoration: none">Cómo funciona</a>
+<a href="#faq" style="text-decoration: none">Preguntas</a>
+<a href="#tienda" style="text-decoration: none; background: #FF5C6C; border: 2px solid #2B2140; border-radius: 999px; padding: 8px 18px; box-shadow: 0 3px 0 #2B2140; font-family: 'Baloo 2', ui-rounded, sans-serif">Elegir mi pieza</a>
+</nav>
+</div>
+</header>
+
+<!-- Hero -->
+<section id="top" style="max-width: 1120px; margin: 0 auto; padding: 56px 24px 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px">
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 20px">
+<span style="background: #FFC83D; border: 2px solid #2B2140; border-radius: 999px; padding: 4px 16px; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; transform: rotate(-2deg)">Hecho a mano · por encargo</span>
+<h1 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: clamp(44px, 6vw, 76px); line-height: 1; text-wrap: balance">Crochet tejido a mano, solo para ti</h1>
+<p style="margin: 0; font-size: 20px; max-width: 460px">Eliges la pieza, la tejemos punto a punto y te llega a casa lista para regalar. Sin stock y sin dos iguales.</p>
+<a href="#tienda" style="text-decoration: none; background: #FF5C6C; border: 2px solid #2B2140; border-radius: 999px; padding: 16px 36px; box-shadow: 0 5px 0 #2B2140; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 22px">Elegir mi pieza</a>
+<p style="margin: 0; font-size: 15px; font-weight: 700">Desde 18 € · Lista en 5 a 15 días · Envío a toda Europa</p>
+<div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700">
+<span role="img" aria-label="5 estrellas" style="color: #B87A00; font-size: 20px; letter-spacing: 2px">★★★★★</span>
+<span>[TU NOTA MEDIA] · [N.º DE RESEÑAS REALES]</span>
+</div>
+</div>
+<a href="Ficha.dc.html" style="flex: 1 1 380px; min-width: 0; max-width: 460px; margin: 0 auto; text-decoration: none; position: relative; display: block; transform: rotate(2deg)">
+<div style="aspect-ratio: 1 / 1; background: #FFE1E6; border: 2px solid #2B2140; border-radius: 28px; box-shadow: 0 6px 0 #2B2140; display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px; font-weight: 700">[FOTO O VÍDEO: tu pieza más vendida en manos de alguien, luz natural, fondo liso]</div>
+<span style="position: absolute; left: -14px; bottom: 28px; background: #FFFFFF; border: 2px solid #2B2140; border-radius: 16px; padding: 10px 16px; box-shadow: 0 4px 0 #2B2140; display: flex; flex-direction: column; font-weight: 800; transform: rotate(-4deg)"><span style="font-size: 14px">Pulpo amigurumi</span><span style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-size: 26px; line-height: 1; color: #B3243A">24 €</span></span>
+</a>
+</section>
+
+<!-- Franja de confianza -->
+<section style="background: #7A55C7; color: #FFFFFF; border-top: 2px solid #2B2140; border-bottom: 2px solid #2B2140">
+<ul style="list-style: none; max-width: 1120px; margin: 0 auto; padding: 16px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 12px; font-weight: 800; text-align: center">
+<li>100 % hecho a mano</li>
+<li>Tejido solo cuando lo pides</li>
+<li>Envíos a toda Europa</li>
+<li>Pago seguro con Stripe</li>
+</ul>
+</section>
+
+<!-- Productos -->
+<section id="tienda" style="max-width: 1120px; margin: 0 auto; padding: 72px 24px">
+<h2 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 48px; line-height: 1.05">Las más pedidas</h2>
+<p style="margin: 8px 0 0; font-size: 19px">Elige la tuya y hoy mismo sacamos los ovillos.</p>
+<div style="margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px">
+<sc-for list="{{products}}" as="p" hint-placeholder-count="6">
+<a href="Ficha.dc.html" style="text-decoration: none; background: #FFFFFF; border: 2px solid #2B2140; border-radius: 24px; box-shadow: 0 5px 0 #2B2140; overflow: hidden; display: flex; flex-direction: column">
+<div style="aspect-ratio: 1 / 1; background: #FFE1E6; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; font-size: 15px; font-weight: 700">[FOTO: {{p.name}}]
+<sc-if value="{{p.badge}}" hint-placeholder-val="{{true}}"><span style="position: absolute; top: 12px; left: 12px; background: #FFC83D; border: 2px solid #2B2140; border-radius: 999px; padding: 2px 12px; font-size: 13px; font-weight: 800">{{p.badge}}</span></sc-if>
+</div>
+<div style="border-top: 2px solid #2B2140; padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 700; font-size: 22px; line-height: 1.1">{{p.name}}</span>
+<span style="font-size: 14px; font-weight: 700">Lista en {{p.days}} días</span>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px">
+<span style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 28px; line-height: 1; color: #B3243A">{{p.price}}</span>
+<span style="background: #FF5C6C; border: 2px solid #2B2140; border-radius: 999px; padding: 6px 16px; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 16px">Ver pieza</span>
+</div>
+</div>
+</a>
+</sc-for>
+</div>
+</section>
+
+<!-- Opiniones -->
+<section id="opiniones" style="background: #FFFFFF; border-top: 2px solid #2B2140; border-bottom: 2px solid #2B2140">
+<div style="max-width: 1120px; margin: 0 auto; padding: 72px 24px">
+<h2 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 48px; line-height: 1.05">Lo que dicen quienes ya tienen la suya</h2>
+<div style="margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px">
+<figure style="margin: 0; background: #FFF7EC; border: 2px solid #2B2140; border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<span role="img" aria-label="5 estrellas" style="color: #B87A00; font-size: 20px; letter-spacing: 2px">★★★★★</span>
+<blockquote style="margin: 0; font-size: 18px">[RESEÑA REAL 1: lo que más gustó de la pieza, con sus palabras]</blockquote>
+<figcaption style="display: flex; align-items: center; gap: 12px; font-weight: 800"><span style="width: 52px; height: 52px; border-radius: 14px; background: #FFE1E6; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center; font-size: 11px">[FOTO]</span>[NOMBRE] · [CIUDAD]</figcaption>
+</figure>
+<figure style="margin: 0; background: #FFF7EC; border: 2px solid #2B2140; border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<span role="img" aria-label="5 estrellas" style="color: #B87A00; font-size: 20px; letter-spacing: 2px">★★★★★</span>
+<blockquote style="margin: 0; font-size: 18px">[RESEÑA REAL 2: sobre el regalo y la reacción de quien lo recibió]</blockquote>
+<figcaption style="display: flex; align-items: center; gap: 12px; font-weight: 800"><span style="width: 52px; height: 52px; border-radius: 14px; background: #FFE1E6; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center; font-size: 11px">[FOTO]</span>[NOMBRE] · [CIUDAD]</figcaption>
+</figure>
+<figure style="margin: 0; background: #FFF7EC; border: 2px solid #2B2140; border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 12px">
+<span role="img" aria-label="5 estrellas" style="color: #B87A00; font-size: 20px; letter-spacing: 2px">★★★★★</span>
+<blockquote style="margin: 0; font-size: 18px">[RESEÑA REAL 3: sobre el plazo, el envío y el embalaje]</blockquote>
+<figcaption style="display: flex; align-items: center; gap: 12px; font-weight: 800"><span style="width: 52px; height: 52px; border-radius: 14px; background: #FFE1E6; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center; font-size: 11px">[FOTO]</span>[NOMBRE] · [CIUDAD]</figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- Cómo funciona -->
+<section id="como" style="background: #FFE1E6; border-bottom: 2px solid #2B2140">
+<div style="max-width: 1120px; margin: 0 auto; padding: 72px 24px">
+<h2 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 48px; line-height: 1.05">Así llega a tus manos</h2>
+<ol style="list-style: none; margin: 32px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px">
+<li style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 24px; box-shadow: 0 5px 0 #2B2140; padding: 24px; display: flex; flex-direction: column; gap: 8px">
+<span style="width: 52px; height: 52px; border-radius: 50%; background: #FFC83D; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 26px">1</span>
+<h3 style="margin: 6px 0 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 700; font-size: 26px; line-height: 1.1">Hoy: eliges tu pieza</h3>
+<p style="margin: 0">Haces el pedido en un minuto y pagas de forma segura.</p>
+</li>
+<li style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 24px; box-shadow: 0 5px 0 #2B2140; padding: 24px; display: flex; flex-direction: column; gap: 8px">
+<span style="width: 52px; height: 52px; border-radius: 50%; background: #8FE3D9; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 26px">2</span>
+<h3 style="margin: 6px 0 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 700; font-size: 26px; line-height: 1.1">5 a 15 días: la tejemos</h3>
+<p style="margin: 0">A mano, punto a punto. Cada ficha indica su plazo exacto.</p>
+</li>
+<li style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 24px; box-shadow: 0 5px 0 #2B2140; padding: 24px; display: flex; flex-direction: column; gap: 8px">
+<span style="width: 52px; height: 52px; border-radius: 50%; background: #FF5C6C; border: 2px solid #2B2140; display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 26px">3</span>
+<h3 style="margin: 6px 0 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 700; font-size: 26px; line-height: 1.1">2 a 7 días: te llega</h3>
+<p style="margin: 0">Bien envuelta, con seguimiento, lista para regalar.</p>
+</li>
+</ol>
+</div>
+</section>
+
+<!-- Quién teje -->
+<section style="max-width: 1120px; margin: 0 auto; padding: 72px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px">
+<div style="flex: 1 1 320px; min-width: 0; max-width: 400px; aspect-ratio: 4 / 5; background: #D9F4F0; border: 2px solid #2B2140; border-radius: 28px; box-shadow: 0 6px 0 #2B2140; display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px; font-weight: 700; transform: rotate(-2deg)">[FOTO: quien teje, con las manos en la labor]</div>
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 48px; line-height: 1.05">Detrás de cada pieza hay unas manos</h2>
+<p style="margin: 0; font-size: 19px">Soy [TU NOMBRE] y tejo cada encargo en [TU CIUDAD]. [DOS FRASES TUYAS: desde cuándo tejes y por qué empezaste a vender].</p>
+<p style="margin: 0; font-size: 19px">Si quieres otro color o tienes una duda antes de pedir, escríbeme a <a href="mailto:hola@tudominio.com" style="font-weight: 800">hola@tudominio.com</a>.</p>
+</div>
+</section>
+
+<!-- Preguntas -->
+<section id="faq" style="max-width: 760px; margin: 0 auto; padding: 0 24px 72px">
+<h2 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 48px; line-height: 1.05">Antes de pedir</h2>
+<div style="margin-top: 24px; display: flex; flex-direction: column; gap: 12px">
+<details open style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 18px; padding: 18px 20px"><summary style="cursor: pointer; font-weight: 800; font-size: 19px">¿Cuándo me llega?</summary><p style="margin: 10px 0 0">Cada pieza se teje al recibir tu pedido. En su ficha ves la fecha estimada de entrega antes de comprar.</p></details>
+<details style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 18px; padding: 18px 20px"><summary style="cursor: pointer; font-weight: 800; font-size: 19px">¿Cuánto cuesta el envío?</summary><p style="margin: 10px 0 0">España 4,90 €, Andorra 6,90 €, resto de la UE 9,90 €. Gratis desde 60 €.</p></details>
+<details style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 18px; padding: 18px 20px"><summary style="cursor: pointer; font-weight: 800; font-size: 19px">¿Puedo pedir otro color?</summary><p style="margin: 10px 0 0">Sí. Elige el color en la ficha o cuéntanoslo en las notas del pedido.</p></details>
+<details style="background: #FFFFFF; border: 2px solid #2B2140; border-radius: 18px; padding: 18px 20px"><summary style="cursor: pointer; font-weight: 800; font-size: 19px">¿Y si no me convence?</summary><p style="margin: 10px 0 0">[TU POLÍTICA DE DEVOLUCIONES PARA PIEZAS POR ENCARGO]</p></details>
+</div>
+</section>
+
+<!-- CTA final -->
+<section style="background: #FFC83D; border-top: 2px solid #2B2140">
+<div style="max-width: 760px; margin: 0 auto; padding: 72px 24px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center">
+<h2 style="margin: 0; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: clamp(40px, 5vw, 64px); line-height: 1">¿Tejemos la tuya?</h2>
+<p style="margin: 0; font-size: 19px">Si pides hoy, empezamos esta misma semana.</p>
+<a href="#tienda" style="text-decoration: none; background: #FF5C6C; border: 2px solid #2B2140; border-radius: 999px; padding: 16px 36px; box-shadow: 0 5px 0 #2B2140; font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 22px">Elegir mi pieza</a>
+</div>
+</section>
+
+<!-- Pie -->
+<footer style="background: #2B2140; color: #FFF7EC; text-align: center; padding: 40px 24px; display: flex; flex-direction: column; align-items: center; gap: 8px">
+<span style="font-family: 'Baloo 2', ui-rounded, sans-serif; font-weight: 800; font-size: 26px">Punto Alegre</span>
+<span>Tejido a mano con mucho cariño.</span>
+<span style="font-size: 14px">Envíos y devoluciones · Aviso legal · Privacidad</span>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":4700}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+products: [
+{ name: 'Pulpo amigurumi', price: '24 €', days: 7, badge: 'Más vendido' },
+{ name: 'Bolso granny square', price: '45 €', days: 12, badge: '' },
+{ name: 'Gorro con pompón', price: '29 €', days: 8, badge: '' },
+{ name: 'Manta de bebé arcoíris', price: '69 €', days: 15, badge: 'Envío gratis' },
+{ name: 'Ramo de flores eterno', price: '35 €', days: 10, badge: '' },
+{ name: 'Set de 4 posavasos', price: '18 €', days: 5, badge: '' }
+]
+};
+}
+}
+</script>
+</body>
+</html>
