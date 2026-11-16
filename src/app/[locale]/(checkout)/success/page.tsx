@@ -37,7 +37,8 @@ export default async function Success({
   if (!isLocale(locale)) notFound();
   const t = getDict(locale).success;
   const order = await lookup((await searchParams).session_id);
-  const paid = order && order.status !== "pending";
+  // Pagado o ya en marcha. Un pedido cancelado o pendiente no se da por pagado.
+  const paid = !!order && ["paid", "in_production", "shipped", "delivered"].includes(order.status);
 
   return (
     <div className="mx-auto max-w-xl px-4 py-20 text-center">

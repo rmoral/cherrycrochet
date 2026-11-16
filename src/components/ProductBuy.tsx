@@ -1,19 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/config";
 import { estimateDelivery, formatDeliveryRange, formatDeliveryShort } from "@/lib/delivery";
 import type { Dict } from "@/lib/i18n";
 import { fill } from "@/lib/text";
 import { buttonClass } from "./ui/Button";
 import { Icon } from "./ui/Icon";
+import { useHydrated } from "./useHydrated";
 
 type Color = { id: string; hex: string; name: string };
-
-// true en el navegador tras hidratar, false en el servidor: la fecha nunca queda congelada en el HTML estático.
-const subscribe = () => () => {};
-const useHydrated = () =>
-  useSyncExternalStore(subscribe, () => true, () => false);
 
 /**
  * Bloque de compra de la ficha: fecha de entrega, selector de color, CTA principal y barra

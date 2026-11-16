@@ -13,6 +13,7 @@ import { demoMode, getProduct } from "@/lib/data";
 import { serviceClient } from "@/lib/supabase/admin";
 import { stripe } from "@/lib/stripe";
 import { tr } from "@/lib/types";
+import { CHECKOUT_FIELDS, validateField } from "@/lib/validation";
 
 export type CheckoutState = { error: string | null };
 
@@ -34,21 +35,17 @@ export async function createCheckout(
     address_line1: get("address1"),
     address_line2: get("address2") || null,
     city: get("city"),
-    region: get("region") || null,
+    region: null, // el formulario ya no pide provincia
     postal_code: get("postal"),
     country: get("country").toUpperCase(),
     notes: get("notes") || null,
   };
   const quantity = Math.min(MAX_QTY, Math.max(1, parseInt(get("quantity")) || 1));
 
+  // Mismas reglas que el navegador (src/lib/validation.ts); aquí son las que cuentan.
   const valid =
-    data.customer_name.length > 1 &&
-    /^\S+@\S+\.\S+$/.test(data.email) &&
-    data.phone.length > 5 &&
-    data.address_line1 &&
-    data.city &&
-    data.postal_code &&
-    shipCountries.includes(data.country);
+    shipCountries.includes(data.country) &&
+    CHECKOUT_FIELDS.every((f) => validateField(f, get(f), data.country) === null);
   if (!valid) return { error: t.errorFields };
 
   // El precio se lee SIEMPRE de la base de datos, nunca del formulario.
@@ -60,10 +57,12 @@ export async function createCheckout(
   if (ship === null) return { error: t.errorFields };
   const productName = tr(product.name, locale);
 
-  // Color: debe existir en el producto. Se guarda su nombre en español para el back office.
+  // Color: obligatorio si el producto tiene colores y debe existir en él.
+  // En order_items se guarda en español (back office); en Stripe, en el idioma del cliente.
   const colorId = get("color");
   const color = colorId ? product.colors.find((c) => c.id === colorId) : undefined;
-  if (colorId && !color) return { error: t.errorFields };
+  if ((colorId && !color) || (product.colors.length > 0 && !color)) return { error: t.errorFields };
+  const stripeName = color ? `${productName} · ${tr(color.name, locale)}` : productName;
 
   let url: string | null = null;
   try {
@@ -106,7 +105,7 @@ export async function createCheckout(
           price_data: {
             currency: "eur",
             unit_amount: product.price_cents,
-            product_data: { name: productName, images },
+            product_data: { name: stripeName, images },
           },
         },
       ],
