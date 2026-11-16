@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { brand, isLocale, locales, shipping, siteUrl } from "@/lib/config";
 import { getDict } from "@/lib/i18n";
-import { getProduct, getProducts } from "@/lib/data";
-import { formatPrice, tr } from "@/lib/types";
+import { getProduct, getProducts, getReviews } from "@/lib/data";
+import { fill, formatDays, shippingRatesText } from "@/lib/text";
+import { formatPrice, tr, type Product } from "@/lib/types";
 import { Gallery } from "@/components/Gallery";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductBuy } from "@/components/ProductBuy";
+import { ProductCard, productBadge } from "@/components/ProductCard";
+import { Accordion } from "@/components/ui/Accordion";
 import { Icon } from "@/components/ui/Icon";
+import { Stars } from "@/components/ui/Stars";
 
 export const revalidate = 60;
 
@@ -18,6 +22,7 @@ export async function generateStaticParams() {
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
 const abs = (url: string) => (url.startsWith("http") ? url : `${siteUrl}${url}`);
+const h2 = "text-[28px] font-extrabold leading-[1.05] md:text-[40px]";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
@@ -37,86 +42,156 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+/** Venta cruzada: primero las piezas que, junto a esta, alcanzan el envío gratis. */
+function crossSell(product: Product, all: Product[]) {
+  const reaches = (p: Product) => product.price_cents + p.price_cents >= shipping.freeFromCents;
+  return all
+    .filter((p) => p.id !== product.id)
+    .map((p, i) => ({ p, i }))
+    .sort((a, b) => Number(reaches(b.p)) - Number(reaches(a.p)) || a.i - b.i)
+    .slice(0, 2)
+    .map(({ p }) => p);
+}
+
 export default async function ProductPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
   const product = await getProduct(slug);
   if (!product) notFound();
   const t = getDict(locale);
+  const [all, reviews] = await Promise.all([getProducts(), getReviews(product.id)]);
+
   const name = tr(product.name, locale);
   const price = formatPrice(product.price_cents, locale);
-  const buyHref = `/${locale}/checkout/${product.slug}`;
-  const others = (await getProducts()).filter((p) => p.id !== product.id).slice(0, 3);
+  const tagline = tr(product.tagline, locale);
+  const minShipping = Math.min(...shipping.zones.map((z) => z.cents));
+  const firstCountry =
+    new Intl.DisplayNames([locale], { type: "region" }).of(shipping.zones[0].countries[0]) ?? "";
+
+  const rating = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : null;
+  const ratingText =
+    rating === null
+      ? ""
+      : new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(rating);
+
+  const shippingText = [shippingRatesText(locale, t), t.faq.returns.a].filter(Boolean).join(" ");
+  const accordions = [
+    { title: t.product.description, body: tr(product.description, locale) },
+    { title: t.product.details, body: tr(product.details, locale) },
+    { title: t.product.shipping, body: shippingText },
+    { title: t.product.care, body: tr(product.care, locale) },
+  ].filter((a) => a.body.trim());
+  const guarantees = [...t.product.guarantees, t.product.guarantee].filter((g) => g.trim());
+  const others = crossSell(product, all);
 
   return (
     <>
-      <div className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16">
-        <Link href={`/${locale}#tienda`} className="inline-flex items-center gap-1 text-sm font-bold underline">
-          <Icon name="arrow-left" size={16} />
-          {t.product.back}
-        </Link>
-        <div className="mt-4 grid gap-8 md:grid-cols-2 md:gap-12">
-          <Gallery media={product.media} alt={name} />
-          <div>
-            <h1 className="text-4xl font-extrabold md:text-5xl">{name}</h1>
-            {tr(product.tagline, locale) && (
-              <p className="mt-2 text-lg opacity-80">{tr(product.tagline, locale)}</p>
-            )}
-            <p className="mt-4 flex items-baseline gap-3">
-              <span className="font-display text-5xl font-extrabold text-coral-deep">{price}</span>
-              {product.compare_at_cents && product.compare_at_cents > product.price_cents && (
-                <s className="text-xl opacity-50">{formatPrice(product.compare_at_cents, locale)}</s>
+      <div className="mx-auto w-full max-w-[1120px] px-4 pb-8 pt-4 md:px-6 md:pb-[72px] md:pt-10">
+        {/* Móvil: una columna. Escritorio: galería y detalle a la izquierda; compra a la derecha, fija */}
+        <div className="grid gap-5 md:grid-cols-2 md:gap-x-12 md:gap-y-8">
+          <div className="min-w-0 md:col-start-1 md:row-start-1">
+            <Gallery
+              media={product.media}
+              alt={name}
+              badge={productBadge(product, t.products)}
+              t={t.product}
+            />
+          </div>
+
+          <div className="flex min-w-0 flex-col gap-5 md:sticky md:top-6 md:col-start-2 md:row-span-2 md:row-start-1 md:self-start">
+            <div className="flex flex-col gap-1.5">
+              <h1 className="text-4xl font-extrabold leading-none md:text-5xl">{name}</h1>
+              {tagline && <p className="text-[17px] text-muted">{tagline}</p>}
+              {rating !== null && (
+                <a href="#opiniones" className="flex min-h-11 items-center gap-2 text-sm font-bold">
+                  <Stars rating={rating} label={fill(t.reviews.stars, { rating: ratingText })} size={17} />
+                  <span aria-hidden>
+                    {fill(reviews.length === 1 ? t.reviews.one : t.reviews.other, {
+                      rating: ratingText,
+                      count: reviews.length,
+                    })}
+                  </span>
+                </a>
               )}
-            </p>
-            <p className="mt-4 inline-flex items-center gap-1.5 rounded-full border-2 border-ink bg-sun px-4 py-1.5 text-sm font-extrabold">
-              <Icon name="yarn" size={18} strokeWidth={2.4} />
-              {t.product.leadTime.replace("{days}", String(product.lead_time_days))}
-            </p>
-            <Link href={buyHref} className="btn btn-primary mt-6 hidden w-full text-xl md:flex">
-              {t.product.buy}
-            </Link>
-            <ul className="mt-6 grid gap-2 text-sm font-bold">
-              <li className="flex items-center gap-2">
-                <Icon name="check" strokeWidth={3} className="text-mint-deep" />
-                {t.product.handmade}
-              </li>
-              <li className="flex items-center gap-2">
-                <Icon name="check" strokeWidth={3} className="text-mint-deep" />
-                {t.product.freeShipping.replace(
-                  "{amount}",
-                  formatPrice(shipping.freeFromCents, locale),
-                )}
-              </li>
-              <li className="flex items-center gap-2">
-                <Icon name="check" strokeWidth={3} className="text-mint-deep" />
-                {t.product.secure}
-              </li>
-            </ul>
-            <h2 className="mt-8 text-2xl font-bold">{t.product.description}</h2>
-            <div className="mt-2 whitespace-pre-line text-lg leading-relaxed">
-              {tr(product.description, locale)}
+              <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                <span className="font-display text-[46px] font-extrabold leading-none text-coral-deep">{price}</span>
+                <span className="text-sm font-bold">
+                  {fill(t.product.shippingFrom, {
+                    min: formatPrice(minShipping, locale),
+                    free: formatPrice(shipping.freeFromCents, locale),
+                  })}
+                </span>
+              </p>
             </div>
+
+            <ProductBuy
+              locale={locale}
+              checkoutHref={`/${locale}/checkout/${product.slug}`}
+              price={price}
+              leadTimeDays={product.lead_time_days}
+              leadTimeText={formatDays(product.lead_time_days, product.lead_time_days, t.days)}
+              colors={product.colors.map((c) => ({ id: c.id, hex: c.hex, name: tr(c.name, locale) }))}
+              country={firstCountry}
+              t={t.product}
+              between={t.delivery.between}
+            />
+
+            <ul className="flex flex-col gap-2 text-[15px] font-bold">
+              {guarantees.map((g) => (
+                <li key={g} className="flex items-center gap-2.5">
+                  <Icon name="check" strokeWidth={3} className="text-mint-deep" />
+                  {g}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex min-w-0 flex-col gap-2.5 md:col-start-1 md:row-start-2">
+            {accordions.map((a, i) => (
+              <Accordion key={a.title} title={a.title} open={i === 0}>
+                <p className="whitespace-pre-line">{a.body}</p>
+              </Accordion>
+            ))}
           </div>
         </div>
 
+        {reviews.length > 0 && (
+          <section id="opiniones" className="mt-8 flex flex-col gap-3 md:mt-[72px]">
+            <h2 className={h2}>{t.product.reviews}</h2>
+            <div className="grid gap-3 md:grid-cols-3 md:gap-6">
+              {reviews.slice(0, 6).map((r) => (
+                <figure
+                  key={r.id}
+                  lang={r.locale}
+                  className="flex flex-col gap-2 rounded-[18px] border-2 border-ink bg-white p-4"
+                >
+                  <Stars rating={r.rating} label={fill(t.reviews.stars, { rating: r.rating })} size={17} />
+                  <blockquote>{r.body}</blockquote>
+                  <figcaption className="mt-auto flex items-center gap-2.5 text-sm font-extrabold">
+                    {r.photo_url && (
+                      <span className="relative size-12 shrink-0 overflow-hidden rounded-xl border-2 border-ink bg-blush">
+                        <Image src={r.photo_url} alt="" fill sizes="48px" className="object-cover" />
+                      </span>
+                    )}
+                    {r.author}
+                    {r.city ? ` · ${r.city}` : ""}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
         {others.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-3xl font-extrabold">{t.product.more}</h2>
-            <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+          <section className="mt-8 flex flex-col gap-3 md:mt-[72px] md:gap-6">
+            <h2 className={h2}>{t.product.more}</h2>
+            <div className="grid grid-cols-2 gap-3.5 md:max-w-[760px] md:gap-6">
               {others.map((p) => (
                 <ProductCard key={p.id} product={p} locale={locale} t={t} />
               ))}
             </div>
           </section>
         )}
-      </div>
-
-      {/* Barra de compra fija en móvil */}
-      <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-4 border-t-2 border-ink bg-cream px-4 py-3 md:hidden">
-        <span className="font-display text-3xl font-extrabold text-coral-deep">{price}</span>
-        <Link href={buyHref} className="btn btn-primary flex-1">
-          {t.product.buy}
-        </Link>
       </div>
 
       <script
@@ -136,6 +211,16 @@ export default async function ProductPage({ params }: Props) {
               availability: "https://schema.org/MadeToOrder",
               url: `${siteUrl}/${locale}/p/${product.slug}`,
             },
+            // Solo con reseñas reales publicadas.
+            ...(rating !== null && {
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: rating.toFixed(1),
+                reviewCount: reviews.length,
+                bestRating: 5,
+                worstRating: 1,
+              },
+            }),
           }).replace(/</g, "\\u003c"),
         }}
       />

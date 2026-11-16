@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { brand, isLocale, shipping, type Locale } from "@/lib/config";
-import { getDict, type Dict } from "@/lib/i18n";
+import { brand, isLocale, shipping } from "@/lib/config";
+import { getDict } from "@/lib/i18n";
 import { getProducts, getReviews } from "@/lib/data";
-import { fill, formatDays } from "@/lib/text";
+import { fill, formatDays, shippingRatesText } from "@/lib/text";
 import { formatPrice, tr, type Product, type Review } from "@/lib/types";
 import { ProductCard } from "@/components/ProductCard";
 import { Accordion } from "@/components/ui/Accordion";
@@ -31,21 +31,6 @@ function facts(products: Product[]) {
       max: Math.max(...transit.map((d) => d[1])),
     },
   };
-}
-
-/** Tarifas de envío por zona en una frase: «España 4,90 €, Andorra 6,90 € y resto de la UE 9,90 €». */
-function shippingRates(locale: Locale, t: Dict) {
-  const regions = new Intl.DisplayNames([locale], { type: "region" });
-  const parts = shipping.zones.map((z) => {
-    const name = z.countries.length === 1 ? (regions.of(z.countries[0]) ?? z.id) : t.faq.otherZone;
-    return `${name} ${formatPrice(z.cents, locale)}`;
-  });
-  const rates = new Intl.ListFormat(locale, { type: "conjunction" }).format(parts);
-  // «resto de la UE» empieza la frase si es la primera zona; en el resto de casos va en minúscula.
-  return fill(t.faq.shipping.a, {
-    rates: rates.charAt(0).toUpperCase() + rates.slice(1),
-    free: formatPrice(shipping.freeFromCents, locale),
-  });
 }
 
 /** Hasta 3 reseñas, primero las que tienen foto del cliente. */
@@ -93,7 +78,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
       q: t.faq.when.q,
       a: fill(t.faq.when.a, { transit: formatDays(f.transit.min, f.transit.max, t.days) }),
     },
-    { q: t.faq.shipping.q, a: shippingRates(locale, t) },
+    { q: t.faq.shipping.q, a: shippingRatesText(locale, t) },
     t.faq.color,
     t.faq.returns,
   ].filter((item) => item.a.trim());
