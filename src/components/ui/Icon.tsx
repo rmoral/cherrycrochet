@@ -20,6 +20,7 @@ const paths = {
     </>
   ),
   play: <path d="M8 5v14l11-7z" fill="currentColor" stroke="none" />,
+  pause: <path d="M8 5v14M16 5v14" />,
   plus: <path d="M12 5v14M5 12h14" />,
   minus: <path d="M5 12h14" />,
   yarn: (
