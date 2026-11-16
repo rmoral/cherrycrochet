@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { isLocale } from "@/lib/config";
 import { getDict } from "@/lib/i18n";
 import { AnnounceBar, Footer, Header } from "@/components/Chrome";
+import { SkipLink } from "@/components/SkipLink";
 
 /** Tienda: barra de anuncio, cabecera completa y pie. */
 export default async function ShopLayout({
@@ -16,9 +17,12 @@ export default async function ShopLayout({
   const t = getDict(locale);
   return (
     <>
+      <SkipLink label={t.nav.skip} />
       <AnnounceBar locale={locale} t={t} />
       <Header locale={locale} t={t} />
-      <main className="flex-1">{children}</main>
+      <main id="contenido" tabIndex={-1} className="flex-1 outline-none">
+        {children}
+      </main>
       <Footer locale={locale} t={t} />
     </>
   );

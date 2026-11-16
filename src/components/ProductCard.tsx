@@ -4,6 +4,7 @@ import { shipping, type Locale } from "@/lib/config";
 import type { Dict } from "@/lib/i18n";
 import { fill, formatDays } from "@/lib/text";
 import { formatPrice, tr, type Product } from "@/lib/types";
+import { AutoplayVideo } from "./AutoplayVideo";
 import { Badge } from "./ui/Badge";
 
 /** Distintivo de la tarjeta: «Más vendido» si está destacado; si no, «Envío gratis» si lo alcanza solo. */
@@ -34,21 +35,11 @@ export function ProductCard({
     >
       <div className="relative aspect-square bg-blush">
         {cover?.type === "video" ? (
-          <video
-            src={cover.url}
-            poster={poster}
-            muted
-            loop
-            playsInline
-            autoPlay
-            preload="metadata"
-            aria-hidden
-            className="size-full object-cover"
-          />
+          <AutoplayVideo src={cover.url} poster={poster} aria-hidden className="size-full object-cover" />
         ) : cover ? (
           <Image
             src={cover.url}
-            alt={name}
+            alt="" // el nombre ya está en la tarjeta, que es el enlace
             fill
             sizes="(max-width: 768px) 50vw, 360px"
             unoptimized={cover.url.endsWith(".svg")}

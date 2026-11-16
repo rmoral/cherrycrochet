@@ -56,7 +56,7 @@ export function ProductForm({ product }: { product?: Product }) {
             {media.map((m, i) => (
               <div key={m.url} className="relative size-28 overflow-hidden rounded-xl border-2 border-ink bg-blush">
                 {m.type === "video" ? (
-                  <video src={m.url} muted className="size-full object-cover" />
+                  <video src={m.url} muted preload="metadata" className="size-full object-cover" />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={m.url} alt="" className="size-full object-cover" />

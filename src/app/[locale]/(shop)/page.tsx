@@ -1,11 +1,14 @@
 import Image from "next/image";
+import { preload } from "react-dom";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { brand, isLocale, shipping } from "@/lib/config";
 import { getDict } from "@/lib/i18n";
 import { getProducts, getReviews } from "@/lib/data";
 import { fill, formatDays, shippingRatesText } from "@/lib/text";
+import { returnsPolicy } from "@/lib/legal";
 import { formatPrice, tr, type Product, type Review } from "@/lib/types";
+import { AutoplayVideo } from "@/components/AutoplayVideo";
 import { ProductCard } from "@/components/ProductCard";
 import { Accordion } from "@/components/ui/Accordion";
 import { Badge } from "@/components/ui/Badge";
@@ -48,6 +51,8 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
   const heroProduct = products.find((p) => p.featured) ?? products[0];
   const heroMedia = heroProduct?.media[0];
   const heroPoster = heroProduct?.media.find((m) => m.type === "image")?.url;
+  // Si el hero es un vídeo, su póster es el elemento LCP: se precarga.
+  if (heroMedia?.type === "video" && heroPoster) preload(heroPoster, { as: "image", fetchPriority: "high" });
 
   const rating = reviews.length
     ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
@@ -80,7 +85,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
     },
     { q: t.faq.shipping.q, a: shippingRatesText(locale, t) },
     t.faq.color,
-    t.faq.returns,
+    { q: t.faq.returns.q, a: returnsPolicy(t) },
   ].filter((item) => item.a.trim());
 
   const showMaker = t.maker.intro.trim() !== "";
@@ -129,23 +134,13 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
           >
             <PhotoFrame radius="lg" shadow="md" className="md:rounded-[28px] md:shadow-[0_6px_0_var(--color-ink)]">
               {heroMedia.type === "video" ? (
-                <video
-                  src={heroMedia.url}
-                  poster={heroPoster}
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                  preload="metadata"
-                  aria-hidden
-                  className="size-full object-cover"
-                />
+                <AutoplayVideo src={heroMedia.url} poster={heroPoster} aria-hidden className="size-full object-cover" />
               ) : (
                 <Image
                   src={heroMedia.url}
-                  alt={tr(heroProduct.name, locale)}
+                  alt="" // el enlace ya lleva el nombre y el precio en la etiqueta
                   fill
-                  priority
+                  preload
                   sizes="(max-width: 768px) 92vw, 460px"
                   unoptimized={heroMedia.url.endsWith(".svg")}
                   className="object-cover"

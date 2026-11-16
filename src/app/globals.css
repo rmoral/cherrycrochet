@@ -23,6 +23,17 @@
 html {
   scroll-behavior: smooth;
 }
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Foco visible en todos los controles. Sobre fondo oscuro, `--focus-ring` pasa a sol. */
+:focus-visible {
+  outline: 3px solid var(--focus-ring, var(--color-grape));
+  outline-offset: 2px;
+}
 body {
   background: var(--color-cream);
   color: var(--color-ink);
@@ -63,7 +74,7 @@ h3 {
     box-shadow: 0 5px 0 0 var(--color-ink);
   }
   .field {
-    @apply w-full rounded-xl border-2 border-field bg-white px-4 py-3 text-base outline-none focus:border-grape;
+    @apply w-full rounded-xl border-2 border-field bg-white px-4 py-3 text-base focus:border-grape;
   }
   .label {
     @apply mb-1 block text-sm font-bold;

@@ -16,6 +16,9 @@ npm run dev        # http://localhost:3000
 2. **Usuario admin**: en *Authentication → Users* crea un usuario con email y contraseña.
    Desactiva el registro público (*Authentication → Sign In / Providers → Allow new users to sign up*).
 3. **Variables**: copia `.env.example` a `.env.local` y rellénalo. `ADMIN_EMAILS` debe incluir el email del paso 2.
+   Medición (opcional): `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` activa Plausible, que no usa cookies
+   (`NEXT_PUBLIC_PLAUSIBLE_SRC` para una instancia propia). Sin ella no se carga ningún script.
+   `NEXT_PUBLIC_ANALYTICS_DEBUG=1` muestra los eventos en la consola.
 4. **Stripe**: copia la clave secreta. Crea un webhook hacia `https://TU-DOMINIO/api/stripe/webhook`
    con los eventos `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
    `checkout.session.async_payment_failed` y `checkout.session.expired`; copia su *signing secret*.
@@ -50,5 +53,7 @@ y el plan por fases para Claude Code en `docs/PROMPTS.md`. `CLAUDE.md` contiene 
 ## Pendiente / siguientes pasos
 
 - Emails propios al cliente (confirmación, "tu pedido ha salido"). Hoy solo llega el recibo de Stripe si lo activas.
-- Páginas legales (aviso legal, privacidad, devoluciones) e impuestos: los precios se tratan como finales.
+- Textos legales: las páginas existen (`/envios-y-devoluciones`, `/aviso-legal`, `/privacidad`) pero
+  tienen huecos `[PENDIENTE: …]` en `src/lib/i18n.ts` (`legal`). Mientras quede alguno son `noindex` y no
+  entran en el sitemap. Impuestos: los precios se tratan como finales.
 - Compra de un producto por pedido (sin carrito). El modelo de datos ya admite varios artículos.

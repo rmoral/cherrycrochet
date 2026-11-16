@@ -5,6 +5,7 @@ import "@fontsource-variable/nunito";
 import "../globals.css";
 import { brand, isLocale, locales, siteUrl } from "@/lib/config";
 import { getDict } from "@/lib/i18n";
+import { AnalyticsScript } from "@/components/Analytics";
 
 export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 
@@ -40,7 +41,10 @@ export default async function LocaleLayout({
   // La cabecera y el pie los pone cada grupo: (shop) la tienda completa, (checkout) la mínima.
   return (
     <html lang={locale}>
-      <body className="flex min-h-dvh flex-col antialiased md:text-[17px]">{children}</body>
+      <body className="flex min-h-dvh flex-col antialiased md:text-[17px]">
+        {children}
+        <AnalyticsScript />
+      </body>
     </html>
   );
 }

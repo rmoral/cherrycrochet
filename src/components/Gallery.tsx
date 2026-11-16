@@ -1,13 +1,17 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { preload } from "react-dom";
 import type { Dict } from "@/lib/i18n";
 import { fill } from "@/lib/text";
 import type { Media } from "@/lib/types";
 import { Badge } from "./ui/Badge";
 import { Icon } from "./ui/Icon";
 
-type Labels = Pick<Dict["product"], "gallery" | "photo" | "video" | "play" | "pause">;
+type Labels = Pick<
+  Dict["product"],
+  "gallery" | "photo" | "video" | "play" | "pause" | "photoAlt" | "videoAlt"
+>;
 
 /**
  * Galería deslizable con scroll-snap. El vídeo va primero (silenciado, en bucle, con póster).
@@ -29,11 +33,16 @@ export function Gallery({
   const track = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const photos = items.filter((m) => m.type === "image").length;
 
-  // Sin reproducción automática para quien pide menos movimiento.
+  // Si la galería empieza con vídeo, su póster es el elemento LCP: se precarga.
+  if (items[0]?.type === "video" && poster) preload(poster, { as: "image", fetchPriority: "high" });
+
+  // El vídeo arranca tras hidratar, y nunca para quien pide menos movimiento.
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) video.current?.pause();
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      void video.current?.play().catch(() => {});
   }, []);
 
   const goTo = (i: number) => {
@@ -54,11 +63,15 @@ export function Gallery({
   };
 
   return (
-    <section aria-label={fill(t.gallery, { name: alt })} className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-2.5">
       <div className="relative">
         <div
           ref={track}
           onScroll={onScroll}
+          // Contenedor desplazable: enfocable para moverlo con las flechas del teclado.
+          tabIndex={0}
+          role="group"
+          aria-label={fill(t.gallery, { name: alt })}
           className="flex aspect-square snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-3xl border-2 border-ink bg-blush shadow-[0_5px_0_var(--color-ink)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {items.map((m, i) => (
@@ -71,8 +84,8 @@ export function Gallery({
                   muted
                   loop
                   playsInline
-                  autoPlay
                   preload="metadata"
+                  aria-label={fill(t.videoAlt, { name: alt })}
                   onPlay={() => setPlaying(true)}
                   onPause={() => setPlaying(false)}
                   className="size-full object-cover"
@@ -80,9 +93,13 @@ export function Gallery({
               ) : (
                 <Image
                   src={m.url}
-                  alt={i === 0 || (i === 1 && items[0].type === "video") ? alt : ""}
+                  alt={
+                    photos > 1
+                      ? fill(t.photoAlt, { name: alt, n: i - (items.length - photos) + 1, total: photos })
+                      : alt
+                  }
                   fill
-                  priority={i === 0}
+                  preload={i === 0}
                   sizes="(max-width: 768px) 100vw, 560px"
                   unoptimized={m.url.endsWith(".svg")}
                   className="object-cover"
@@ -137,6 +154,6 @@ export function Gallery({
           ))}
         </div>
       )}
-    </section>
+    </div>
   );
 }

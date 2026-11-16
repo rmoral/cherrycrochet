@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
-import { startTransition, useActionState, useState, type FormEvent, type ReactNode } from "react";
+import { startTransition, useActionState, useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { createCheckout, type CheckoutState } from "@/app/actions/checkout";
 import { MAX_QTY, shipping, shippingFor, type Locale } from "@/lib/config";
 import { estimateDelivery, formatDeliveryShort } from "@/lib/delivery";
 import type { Dict } from "@/lib/i18n";
 import { fill } from "@/lib/text";
+import { track } from "@/lib/analytics";
 import { formatPrice } from "@/lib/types";
 import {
   CHECKOUT_FIELDS,
@@ -21,7 +22,7 @@ import { useHydrated } from "./useHydrated";
 type Errors = Partial<Record<CheckoutField, FieldError>>;
 
 const inputClass =
-  "min-h-12 w-full rounded-xl border-2 border-field bg-white px-3.5 text-base font-normal text-ink outline-none focus:border-grape aria-[invalid=true]:border-coral-deep";
+  "min-h-12 w-full rounded-xl border-2 border-field bg-white px-3.5 text-base font-normal text-ink focus:border-grape aria-[invalid=true]:border-coral-deep";
 
 export function CheckoutForm({
   locale,
@@ -60,6 +61,15 @@ export function CheckoutForm({
   const progress = Math.min(100, Math.round((subtotal / shipping.freeFromCents) * 100));
   const range = hydrated ? estimateDelivery(leadTimeDays, country) : null;
 
+  useEffect(() => {
+    track("begin_checkout", { item: slug, value: priceCents / 100 });
+  }, [slug, priceCents]);
+
+  // Errores devueltos por el servidor (validación, color, Stripe o modo demo).
+  useEffect(() => {
+    if (state.error) track("checkout_error", { item: slug, reason: "server" });
+  }, [state, slug]);
+
   const check = (field: CheckoutField, value: string, c = country) =>
     setErrors((e) => ({ ...e, [field]: validateField(field, value, c) ?? undefined }));
 
@@ -75,6 +85,11 @@ export function CheckoutForm({
     setErrors(next);
     const first = CHECKOUT_FIELDS.find((f) => next[f]);
     if (first) {
+      track("checkout_error", {
+        item: slug,
+        reason: "validation",
+        fields: CHECKOUT_FIELDS.filter((f) => next[f]).join(","),
+      });
       form.querySelector<HTMLInputElement>(`[name="${first}"]`)?.focus();
       return;
     }
