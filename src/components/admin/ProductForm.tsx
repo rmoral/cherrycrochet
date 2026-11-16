@@ -1,8 +1,6 @@
 "use client";
-import { createClient } from "@supabase/supabase-js";
 import { useActionState, useState } from "react";
 import {
-  createUploadUrl,
   deleteProduct,
   saveProduct,
   type FormState,
@@ -10,6 +8,8 @@ import {
 import { localeNames, locales } from "@/lib/config";
 import type { Media, Product } from "@/lib/types";
 import { Icon } from "@/components/ui/Icon";
+import { ColorsEditor } from "./ColorsEditor";
+import { uploadMedia } from "./upload";
 
 export function ProductForm({ product }: { product?: Product }) {
   const [state, action, pending] = useActionState<FormState, FormData>(saveProduct, { error: null });
@@ -22,16 +22,8 @@ export function ProductForm({ product }: { product?: Product }) {
     setUploading(true);
     setUploadError(null);
     try {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      );
       for (const file of Array.from(files)) {
-        const { path, token, publicUrl } = await createUploadUrl(file.name);
-        const { error } = await supabase.storage
-          .from("product-media")
-          .uploadToSignedUrl(path, token, file, { contentType: file.type });
-        if (error) throw error;
+        const publicUrl = await uploadMedia(file);
         const type: Media["type"] = file.type.startsWith("video") ? "video" : "image";
         setMedia((m) => [...m, { type, url: publicUrl }]);
       }
@@ -133,6 +125,8 @@ export function ProductForm({ product }: { product?: Product }) {
           </label>
         </section>
 
+        <ColorsEditor initial={product?.colors ?? []} />
+
         {locales.map((l) => (
           <details key={l} open={l === "es"} className="card p-5">
             <summary className="cursor-pointer font-display text-2xl font-bold">
@@ -151,6 +145,26 @@ export function ProductForm({ product }: { product?: Product }) {
               <label>
                 <span className="label">Descripción</span>
                 <textarea name={`description_${l}`} rows={6} defaultValue={product?.description[l] ?? ""} className="field" />
+              </label>
+              <label>
+                <span className="label">Medidas y materiales</span>
+                <textarea
+                  name={`details_${l}`}
+                  rows={3}
+                  placeholder="20 cm de alto · algodón 100 % · relleno hipoalergénico"
+                  defaultValue={product?.details?.[l] ?? ""}
+                  className="field"
+                />
+              </label>
+              <label>
+                <span className="label">Cuidados</span>
+                <textarea
+                  name={`care_${l}`}
+                  rows={3}
+                  placeholder="Lavar a mano en agua fría y secar en plano"
+                  defaultValue={product?.care?.[l] ?? ""}
+                  className="field"
+                />
               </label>
             </div>
           </details>

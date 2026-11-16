@@ -22,7 +22,7 @@ export default async function OrdersPage({
 
   let query = db
     .from("orders")
-    .select("*, order_items(product_name, quantity)")
+    .select("*, order_items(product_name, quantity, color)")
     .order("created_at", { ascending: false })
     .limit(200);
   // Por defecto se ocultan los pedidos sin pagar (carritos abandonados)
@@ -67,7 +67,9 @@ export default async function OrdersPage({
               </span>
               <span className="font-bold">{o.customer_name}</span>
               <span className="text-sm opacity-70">
-                {o.order_items?.map((i) => `${i.quantity}× ${i.product_name}`).join(", ")}
+                {o.order_items
+                  ?.map((i) => `${i.quantity}× ${i.product_name}${i.color ? ` · ${i.color}` : ""}`)
+                  .join(", ")}
               </span>
               <span className="ml-auto text-right">
                 <b>{formatPrice(o.total_cents)}</b>

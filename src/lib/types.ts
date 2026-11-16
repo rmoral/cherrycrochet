@@ -3,6 +3,9 @@ import { defaultLocale, type Locale } from "./config";
 export type L10n = Partial<Record<Locale, string>>;
 export type Media = { type: "image" | "video"; url: string };
 
+/** Color en que se puede tejer un producto. `id` viaja en la URL (`?color=`). */
+export type ProductColor = { id: string; hex: string; name: L10n };
+
 export type Product = {
   id: string;
   slug: string;
@@ -12,6 +15,11 @@ export type Product = {
   price_cents: number;
   compare_at_cents: number | null;
   media: Media[];
+  colors: ProductColor[];
+  /** Medidas y materiales, por idioma. */
+  details: L10n;
+  /** Cuidados, por idioma. */
+  care: L10n;
   lead_time_days: number;
   featured: boolean;
   active: boolean;
@@ -54,6 +62,22 @@ export type OrderItem = {
   product_name: string;
   unit_price_cents: number;
   quantity: number;
+  /** Nombre del color (en español) en el momento de la compra. */
+  color: string | null;
+};
+
+/** Reseña real de un cliente. Se muestra en el idioma en que se escribió. */
+export type Review = {
+  id: string;
+  product_id: string | null;
+  author: string;
+  city: string | null;
+  rating: number;
+  body: string;
+  locale: Locale;
+  photo_url: string | null;
+  published: boolean;
+  created_at: string;
 };
 
 export type Order = {

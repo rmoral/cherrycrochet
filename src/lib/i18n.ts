@@ -100,6 +100,8 @@ const es = {
     order: "Pedido n.º",
     back: "Volver a la tienda",
   },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "entre el {min} y el {max}" },
   footer: { tagline: "Tejido a mano con mucho cariño.", rights: "Todos los derechos reservados." },
 };
 
@@ -205,6 +207,8 @@ const ca: Dict = {
     order: "Comanda núm.",
     back: "Tornar a la botiga",
   },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "entre el {min} i el {max}" },
   footer: { tagline: "Teixit a mà amb molt d'afecte.", rights: "Tots els drets reservats." },
 };
 
@@ -308,6 +312,8 @@ const en: Dict = {
     order: "Order no.",
     back: "Back to the shop",
   },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "between {min} and {max}" },
   footer: { tagline: "Handmade with lots of love.", rights: "All rights reserved." },
 };
 
@@ -411,6 +417,8 @@ const fr: Dict = {
     order: "Commande n°",
     back: "Retour à la boutique",
   },
+  /** Rango de fechas de entrega; ver formatDeliveryRange en src/lib/delivery.ts. */
+  delivery: { between: "entre le {min} et le {max}" },
   footer: { tagline: "Fait main avec beaucoup d'amour.", rights: "Tous droits réservés." },
 };
 

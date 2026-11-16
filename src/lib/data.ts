@@ -1,7 +1,7 @@
 import "server-only";
 import { publicClient, supabaseConfigured } from "./supabase/admin";
 import { demoProducts } from "./demo";
-import type { Product } from "./types";
+import type { Product, Review } from "./types";
 
 export const demoMode = () => !supabaseConfigured();
 
@@ -29,4 +29,24 @@ export async function getProduct(slug: string): Promise<Product | null> {
     .eq("active", true)
     .maybeSingle();
   return (data as Product) ?? null;
+}
+
+/**
+ * Reseñas publicadas (más recientes primero). Con `productId`, solo las de ese producto.
+ * En modo demo no hay reseñas: nunca se muestran reseñas inventadas.
+ */
+export async function getReviews(productId?: string): Promise<Review[]> {
+  if (demoMode()) return [];
+  let query = publicClient()
+    .from("reviews")
+    .select("*")
+    .eq("published", true)
+    .order("created_at", { ascending: false });
+  if (productId) query = query.eq("product_id", productId);
+  const { data, error } = await query;
+  if (error) {
+    console.error("getReviews", error.message);
+    return [];
+  }
+  return data as Review[];
 }

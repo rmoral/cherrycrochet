@@ -23,12 +23,22 @@ export const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
 ).replace(/\/$/, "");
 
-// Tarifas de envío por zona (en céntimos). Envío gratis a partir de `freeFromCents`.
-export const shipping = {
+export type ShippingZone = {
+  id: string;
+  countries: string[];
+  /** Coste en céntimos. */
+  cents: number;
+  /** Días de transporte [mín, máx] desde que sale el paquete. Ajústalos a tu transportista. */
+  transitDays: [number, number];
+};
+
+// Tarifas y plazos de envío por zona. Envío gratis a partir de `freeFromCents`.
+// La primera zona es la que se usa cuando aún no se conoce el país (ficha de producto).
+export const shipping: { freeFromCents: number; zones: ShippingZone[] } = {
   freeFromCents: 6000,
   zones: [
-    { id: "es", countries: ["ES"], cents: 490 },
-    { id: "ad", countries: ["AD"], cents: 690 },
+    { id: "es", countries: ["ES"], cents: 490, transitDays: [2, 3] },
+    { id: "ad", countries: ["AD"], cents: 690, transitDays: [3, 5] },
     {
       id: "eu",
       countries: [
@@ -37,6 +47,7 @@ export const shipping = {
         "MT", "CY",
       ],
       cents: 990,
+      transitDays: [4, 7],
     },
   ],
 };

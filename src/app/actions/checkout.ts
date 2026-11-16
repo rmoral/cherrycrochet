@@ -60,6 +60,11 @@ export async function createCheckout(
   if (ship === null) return { error: t.errorFields };
   const productName = tr(product.name, locale);
 
+  // Color: debe existir en el producto. Se guarda su nombre en español para el back office.
+  const colorId = get("color");
+  const color = colorId ? product.colors.find((c) => c.id === colorId) : undefined;
+  if (colorId && !color) return { error: t.errorFields };
+
   let url: string | null = null;
   try {
     const db = serviceClient();
@@ -82,6 +87,7 @@ export async function createCheckout(
       product_name: productName,
       unit_price_cents: product.price_cents,
       quantity,
+      color: color ? tr(color.name, "es") : null,
     });
     if (itemError) throw itemError;
 
