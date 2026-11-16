@@ -4,6 +4,8 @@ export const brand = {
   name: "Punto Alegre", // ← nombre provisional: pon el de tu marca
   email: "hola@tudominio.com",
   instagram: "", // URL completa o vacío para ocultarlo
+  /** Foto de quien teje (4:5, con las manos en la labor) para la landing. Vacío = sin foto. */
+  makerPhoto: "",
 };
 
 export const locales = ["es", "ca", "en", "fr"] as const;

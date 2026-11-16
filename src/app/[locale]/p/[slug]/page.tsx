@@ -103,8 +103,8 @@ export default async function ProductPage({ params }: Props) {
           <section className="mt-16">
             <h2 className="text-3xl font-extrabold">{t.product.more}</h2>
             <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-              {others.map((p, i) => (
-                <ProductCard key={p.id} product={p} locale={locale} index={i + 1} cta={t.products.view} />
+              {others.map((p) => (
+                <ProductCard key={p.id} product={p} locale={locale} t={t} />
               ))}
             </div>
           </section>

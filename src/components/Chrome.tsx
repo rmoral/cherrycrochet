@@ -1,53 +1,110 @@
 import Link from "next/link";
-import { brand, type Locale } from "@/lib/config";
+import { brand, shipping, type Locale } from "@/lib/config";
+import { getReviews } from "@/lib/data";
 import type { Dict } from "@/lib/i18n";
+import { formatPrice } from "@/lib/types";
+import { fill } from "@/lib/text";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import { Button } from "./ui/Button";
 import { Icon } from "./ui/Icon";
 
 export function Logo({ href }: { href: string }) {
   return (
-    <Link href={href} className="flex items-center gap-2 font-display text-2xl font-extrabold">
-      <span aria-hidden className="grid size-9 place-items-center rounded-full border-2 border-ink bg-sun">
-        <Icon name="yarn" strokeWidth={2.4} />
+    <Link
+      href={href}
+      className="flex min-h-11 items-center gap-2 font-display text-[22px] font-extrabold leading-none md:gap-2.5 md:text-[26px]"
+    >
+      <span
+        aria-hidden
+        className="grid size-8 place-items-center rounded-full border-2 border-ink bg-sun md:size-9"
+      >
+        <Icon name="yarn" size={18} strokeWidth={2.4} className="md:size-5" />
       </span>
       {brand.name}
     </Link>
   );
 }
 
-export function Header({ locale, t }: { locale: Locale; t: Dict }) {
+/** Barra de anuncio (tinta). En móvil solo las dos primeras frases. */
+export function AnnounceBar({ locale, t }: { locale: Locale; t: Dict }) {
+  const parts = t.announce.map((p) =>
+    fill(p, { amount: formatPrice(shipping.freeFromCents, locale) }),
+  );
   return (
-    <header className="sticky top-0 z-30 border-b-2 border-ink bg-cream/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Logo href={`/${locale}`} />
-        <nav className="hidden items-center gap-6 font-bold md:flex">
-          <Link href={`/${locale}#tienda`} className="hover:text-coral-deep">{t.nav.shop}</Link>
-          <Link href={`/${locale}#como`} className="hover:text-coral-deep">{t.nav.how}</Link>
-          <Link href={`/${locale}#faq`} className="hover:text-coral-deep">{t.nav.faq}</Link>
+    <div className="bg-ink px-3 py-2 text-center text-[13px] font-bold text-cream md:px-4 md:py-[9px] md:text-sm">
+      {parts.map((p, i) => (
+        <span key={p} className={i > 1 ? "hidden sm:inline" : undefined}>
+          {i > 0 && " · "}
+          {p}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export async function Header({ locale, t }: { locale: Locale; t: Dict }) {
+  const hasReviews = (await getReviews()).length > 0;
+  const home = `/${locale}`;
+  const links = [
+    { href: `${home}#tienda`, label: t.nav.shop },
+    ...(hasReviews ? [{ href: `${home}#opiniones`, label: t.nav.reviews }] : []),
+    { href: `${home}#como`, label: t.nav.how },
+    { href: `${home}#faq`, label: t.nav.faq },
+  ];
+  return (
+    <header className="border-b-2 border-ink bg-cream">
+      <div className="mx-auto flex max-w-[1120px] items-center justify-between gap-3 px-4 py-2.5 md:gap-4 md:px-6 md:py-3.5">
+        <Logo href={home} />
+
+        {/* Móvil: un único acceso a la tienda */}
+        <Link
+          href={`${home}#tienda`}
+          className="flex min-h-11 items-center rounded-full border-2 border-ink bg-white px-4 text-[15px] font-extrabold md:hidden"
+        >
+          {t.nav.shop}
+        </Link>
+
+        {/* Escritorio */}
+        <nav aria-label={t.nav.label} className="hidden items-center gap-6 font-extrabold md:flex">
+          {links.map((l) => (
+            <Link key={l.href} href={l.href} className="hover:text-coral-deep">
+              {l.label}
+            </Link>
+          ))}
+          <Button href={`${home}#tienda`} size="sm">
+            {t.hero.cta}
+          </Button>
+          <LocaleSwitcher locale={locale} />
         </nav>
-        <LocaleSwitcher locale={locale} />
       </div>
     </header>
   );
 }
 
-export function Footer({ t }: { t: Dict }) {
+export function Footer({ locale, t }: { locale: Locale; t: Dict }) {
   return (
     <footer className="bg-ink text-cream">
-      <div className="scallop -mt-px rotate-180 bg-cream text-ink" />
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-10 text-center">
-        <p className="flex items-center gap-2 font-display text-2xl font-extrabold">
+      <div className="mx-auto flex max-w-[1120px] flex-col items-center gap-2 px-4 py-8 text-center md:px-6 md:py-10">
+        <p className="flex items-center gap-2 font-display text-[22px] font-extrabold md:text-[26px]">
           <Icon name="yarn" size={22} strokeWidth={2.4} />
           {brand.name}
         </p>
-        <p className="opacity-80">{t.footer.tagline}</p>
-        <p className="flex flex-wrap justify-center gap-4 text-sm">
-          <a href={`mailto:${brand.email}`} className="underline">{brand.email}</a>
+        <p className="text-[15px] md:text-base">{t.footer.tagline}</p>
+        <p className="flex flex-wrap justify-center gap-x-4 text-sm">
+          <a href={`mailto:${brand.email}`} className="inline-flex min-h-11 items-center underline">
+            {brand.email}
+          </a>
           {brand.instagram && (
-            <a href={brand.instagram} className="underline" rel="noopener">Instagram</a>
+            <a href={brand.instagram} className="inline-flex min-h-11 items-center underline" rel="noopener">
+              Instagram
+            </a>
           )}
         </p>
-        <p className="text-xs opacity-60">
+        <div className="flex items-center gap-2 text-sm">
+          <span aria-hidden>{t.footer.language}</span>
+          <LocaleSwitcher locale={locale} />
+        </div>
+        <p className="mt-2 text-xs opacity-80">
           © {new Date().getFullYear()} {brand.name}. {t.footer.rights}
         </p>
       </div>

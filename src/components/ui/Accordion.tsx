@@ -15,14 +15,22 @@ export function Accordion({
   title: ReactNode;
   children: ReactNode;
   open?: boolean;
-  /** `md`: ficha y FAQ en móvil (radio 16) · `lg`: FAQ en escritorio (radio 18, título 19 px). */
-  size?: "md" | "lg";
+  /**
+   * `md`: ficha y FAQ en móvil (radio 16) · `lg`: FAQ en escritorio (radio 18, título 19 px) ·
+   * `auto`: `md` en móvil y `lg` desde 768 px.
+   */
+  size?: "md" | "lg" | "auto";
   className?: string;
 }) {
-  const s =
-    size === "lg"
-      ? { box: "rounded-[18px]", summary: "px-5 py-[18px] text-[19px]", body: "px-5 pb-[18px]" }
-      : { box: "rounded-2xl", summary: "px-4 py-3.5", body: "px-4 pb-3.5 text-[15px]" };
+  const s = {
+    md: { box: "rounded-2xl", summary: "px-4 py-3.5", body: "px-4 pb-3.5 text-[15px]" },
+    lg: { box: "rounded-[18px]", summary: "px-5 py-[18px] text-[19px]", body: "px-5 pb-[18px]" },
+    auto: {
+      box: "rounded-2xl md:rounded-[18px]",
+      summary: "px-4 py-3.5 md:px-5 md:py-[18px] md:text-[19px]",
+      body: "px-4 pb-3.5 text-[15px] md:px-5 md:pb-[18px] md:text-[17px]",
+    },
+  }[size];
   return (
     <details open={open} className={`group border-2 border-ink bg-white ${s.box} ${className}`}>
       <summary

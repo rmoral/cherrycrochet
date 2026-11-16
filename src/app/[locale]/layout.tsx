@@ -5,7 +5,7 @@ import "@fontsource-variable/nunito";
 import "../globals.css";
 import { brand, isLocale, locales, siteUrl } from "@/lib/config";
 import { getDict } from "@/lib/i18n";
-import { Footer, Header } from "@/components/Chrome";
+import { AnnounceBar, Footer, Header } from "@/components/Chrome";
 
 export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 
@@ -41,10 +41,11 @@ export default async function LocaleLayout({
   const t = getDict(locale);
   return (
     <html lang={locale}>
-      <body className="flex min-h-dvh flex-col antialiased">
+      <body className="flex min-h-dvh flex-col antialiased md:text-[17px]">
+        <AnnounceBar locale={locale} t={t} />
         <Header locale={locale} t={t} />
         <main className="flex-1">{children}</main>
-        <Footer t={t} />
+        <Footer locale={locale} t={t} />
       </body>
     </html>
   );

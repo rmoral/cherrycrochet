@@ -121,7 +121,7 @@ export function ProductForm({ product }: { product?: Product }) {
           </label>
           <label className="flex items-center gap-2 font-bold">
             <input type="checkbox" name="featured" defaultChecked={product?.featured ?? false} className="size-5" />
-            Destacado (portada de la landing)
+            Destacado: portada de la landing y distintivo «Más vendido»
           </label>
         </section>
 
