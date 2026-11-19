@@ -6,6 +6,7 @@ import { getDict } from "@/lib/i18n";
 import { demoMode } from "@/lib/data";
 import { serviceClient } from "@/lib/supabase/admin";
 import { markOrderPaid, stripe } from "@/lib/stripe";
+import { TrackPurchase } from "@/components/TrackPurchase";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = { robots: { index: false } };
@@ -17,7 +18,7 @@ async function lookup(sessionId: string | undefined) {
     await markOrderPaid(session); // respaldo por si el webhook llega tarde
     const { data } = await serviceClient()
       .from("orders")
-      .select("order_number, status")
+      .select("order_number, status, total_cents")
       .eq("stripe_session_id", session.id)
       .maybeSingle();
     return data;
@@ -37,10 +38,12 @@ export default async function Success({
   if (!isLocale(locale)) notFound();
   const t = getDict(locale).success;
   const order = await lookup((await searchParams).session_id);
-  const paid = order && order.status !== "pending";
+  // Pagado o ya en marcha. Un pedido cancelado o pendiente no se da por pagado.
+  const paid = !!order && ["paid", "in_production", "shipped", "delivered"].includes(order.status);
 
   return (
     <div className="mx-auto max-w-xl px-4 py-20 text-center">
+      {paid && order && <TrackPurchase order={order.order_number} totalCents={order.total_cents} />}
       <span className="mx-auto grid size-20 place-items-center rounded-full border-2 border-ink bg-mint-soft text-mint-deep">
         <Icon name="check" size={40} strokeWidth={3} />
       </span>

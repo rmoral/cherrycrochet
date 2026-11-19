@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { brand, isLocale, locales, shipping, siteUrl } from "@/lib/config";
 import { getDict } from "@/lib/i18n";
 import { getProduct, getProducts, getReviews } from "@/lib/data";
 import { fill, formatDays, shippingRatesText } from "@/lib/text";
+import { LEGAL_PAGES, returnsPolicy } from "@/lib/legal";
 import { formatPrice, tr, type Product } from "@/lib/types";
 import { Gallery } from "@/components/Gallery";
 import { ProductBuy } from "@/components/ProductBuy";
@@ -74,7 +76,7 @@ export default async function ProductPage({ params }: Props) {
       ? ""
       : new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(rating);
 
-  const shippingText = [shippingRatesText(locale, t), t.faq.returns.a].filter(Boolean).join(" ");
+  const shippingText = [shippingRatesText(locale, t), returnsPolicy(t)].filter(Boolean).join(" ");
   const accordions = [
     { title: t.product.description, body: tr(product.description, locale) },
     { title: t.product.details, body: tr(product.details, locale) },
@@ -126,6 +128,8 @@ export default async function ProductPage({ params }: Props) {
 
             <ProductBuy
               locale={locale}
+              item={product.slug}
+              priceCents={product.price_cents}
               checkoutHref={`/${locale}/checkout/${product.slug}`}
               price={price}
               leadTimeDays={product.lead_time_days}
@@ -150,6 +154,15 @@ export default async function ProductPage({ params }: Props) {
             {accordions.map((a, i) => (
               <Accordion key={a.title} title={a.title} open={i === 0}>
                 <p className="whitespace-pre-line">{a.body}</p>
+                {a.title === t.product.shipping && (
+                  <Link
+                    href={`/${locale}/${LEGAL_PAGES.shipping}`}
+                    className="mt-1 inline-flex min-h-11 items-center gap-1 font-bold underline"
+                  >
+                    {t.product.shippingLink}
+                    <Icon name="arrow-right" size={16} />
+                  </Link>
+                )}
               </Accordion>
             ))}
           </div>

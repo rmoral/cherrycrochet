@@ -4,26 +4,11 @@ import { getReviews } from "@/lib/data";
 import type { Dict } from "@/lib/i18n";
 import { formatPrice } from "@/lib/types";
 import { fill } from "@/lib/text";
+import { LEGAL_PAGES, type LegalPage } from "@/lib/legal";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { Button } from "./ui/Button";
 import { Icon } from "./ui/Icon";
-
-export function Logo({ href }: { href: string }) {
-  return (
-    <Link
-      href={href}
-      className="flex min-h-11 items-center gap-2 font-display text-[22px] font-extrabold leading-none md:gap-2.5 md:text-[26px]"
-    >
-      <span
-        aria-hidden
-        className="grid size-8 place-items-center rounded-full border-2 border-ink bg-sun md:size-9"
-      >
-        <Icon name="yarn" size={18} strokeWidth={2.4} className="md:size-5" />
-      </span>
-      {brand.name}
-    </Link>
-  );
-}
+import { Logo } from "./Logo";
 
 /** Barra de anuncio (tinta). En móvil solo las dos primeras frases. */
 export function AnnounceBar({ locale, t }: { locale: Locale; t: Dict }) {
@@ -65,7 +50,8 @@ export async function Header({ locale, t }: { locale: Locale; t: Dict }) {
         </Link>
 
         {/* Escritorio */}
-        <nav aria-label={t.nav.label} className="hidden items-center gap-6 font-extrabold md:flex">
+        <div className="hidden items-center gap-6 md:flex">
+        <nav aria-label={t.nav.label} className="flex items-center gap-6 font-extrabold">
           {links.map((l) => (
             <Link key={l.href} href={l.href} className="hover:text-coral-deep">
               {l.label}
@@ -74,8 +60,9 @@ export async function Header({ locale, t }: { locale: Locale; t: Dict }) {
           <Button href={`${home}#tienda`} size="sm">
             {t.hero.cta}
           </Button>
-          <LocaleSwitcher locale={locale} />
         </nav>
+        <LocaleSwitcher locale={locale} label={t.footer.language} />
+        </div>
       </div>
     </header>
   );
@@ -83,7 +70,7 @@ export async function Header({ locale, t }: { locale: Locale; t: Dict }) {
 
 export function Footer({ locale, t }: { locale: Locale; t: Dict }) {
   return (
-    <footer className="bg-ink text-cream">
+    <footer className="bg-ink text-cream [--focus-ring:var(--color-sun)]">
       <div className="mx-auto flex max-w-[1120px] flex-col items-center gap-2 px-4 py-8 text-center md:px-6 md:py-10">
         <p className="flex items-center gap-2 font-display text-[22px] font-extrabold md:text-[26px]">
           <Icon name="yarn" size={22} strokeWidth={2.4} />
@@ -100,9 +87,16 @@ export function Footer({ locale, t }: { locale: Locale; t: Dict }) {
             </a>
           )}
         </p>
+        <nav aria-label={t.legal.nav} className="flex flex-wrap justify-center gap-x-4 text-sm">
+          {(Object.keys(LEGAL_PAGES) as LegalPage[]).map((page) => (
+            <Link key={page} href={`/${locale}/${LEGAL_PAGES[page]}`} className="inline-flex min-h-11 items-center underline">
+              {t.legal[page].title}
+            </Link>
+          ))}
+        </nav>
         <div className="flex items-center gap-2 text-sm">
           <span aria-hidden>{t.footer.language}</span>
-          <LocaleSwitcher locale={locale} />
+          <LocaleSwitcher locale={locale} label={t.footer.language} tone="dark" />
         </div>
         <p className="mt-2 text-xs opacity-80">
           © {new Date().getFullYear()} {brand.name}. {t.footer.rights}

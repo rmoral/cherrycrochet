@@ -5,7 +5,7 @@ export type ButtonVariant = "primary" | "ghost";
 export type ButtonSize = "lg" | "md" | "sm";
 
 const base =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-ink text-center font-display font-extrabold leading-tight text-ink transition-transform hover:-translate-y-0.5 hover:text-ink active:translate-y-[3px] active:shadow-[0_1px_0_var(--color-ink)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-grape disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-2 border-ink text-center font-display font-extrabold leading-tight text-ink transition-transform hover:-translate-y-0.5 hover:text-ink active:translate-y-[3px] active:shadow-[0_1px_0_var(--color-ink)] disabled:pointer-events-none disabled:opacity-60";
 
 const variants: Record<ButtonVariant, string> = {
   // Texto tinta sobre coral (≈ 4,9:1). Nunca blanco.

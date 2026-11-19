@@ -35,7 +35,8 @@ npx tsc --noEmit
 | Lectura pública de productos (+ modo demo) | `src/lib/data.ts`, `src/lib/demo.ts` |
 | Clientes Supabase | `src/lib/supabase/admin.ts` (service role y anónimo), `server.ts` (sesión) |
 | Stripe y `markOrderPaid` | `src/lib/stripe.ts` |
-| Tienda | `src/app/[locale]/` (landing, `p/[slug]`, `checkout/[slug]`, `success`) |
+| Tienda | `src/app/[locale]/(shop)/` (landing, `p/[slug]`) y `(checkout)/` (`checkout/[slug]`, `success`, cabecera mínima) |
+| Validación de campos del checkout (cliente y servidor) | `src/lib/validation.ts` |
 | Acción de compra | `src/app/actions/checkout.ts` |
 | Webhook | `src/app/api/stripe/webhook/route.ts` |
 | Back office | `src/app/admin/`, `src/app/actions/admin.ts`, `src/components/admin/` |

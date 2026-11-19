@@ -1,19 +1,16 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/config";
 import { estimateDelivery, formatDeliveryRange, formatDeliveryShort } from "@/lib/delivery";
 import type { Dict } from "@/lib/i18n";
 import { fill } from "@/lib/text";
+import { track } from "@/lib/analytics";
 import { buttonClass } from "./ui/Button";
 import { Icon } from "./ui/Icon";
+import { useHydrated } from "./useHydrated";
 
 type Color = { id: string; hex: string; name: string };
-
-// true en el navegador tras hidratar, false en el servidor: la fecha nunca queda congelada en el HTML estático.
-const subscribe = () => () => {};
-const useHydrated = () =>
-  useSyncExternalStore(subscribe, () => true, () => false);
 
 /**
  * Bloque de compra de la ficha: fecha de entrega, selector de color, CTA principal y barra
@@ -21,6 +18,8 @@ const useHydrated = () =>
  */
 export function ProductBuy({
   locale,
+  item,
+  priceCents,
   checkoutHref,
   price,
   leadTimeDays,
@@ -31,6 +30,9 @@ export function ProductBuy({
   between,
 }: {
   locale: Locale;
+  /** Identificador del producto para la medición (slug). */
+  item: string;
+  priceCents: number;
   checkoutHref: string;
   price: string;
   leadTimeDays: number;
@@ -46,6 +48,10 @@ export function ProductBuy({
   const [colorId, setColorId] = useState(colors[0]?.id ?? "");
   const [showBar, setShowBar] = useState(false);
   const cta = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    track("view_item", { item, value: priceCents / 100 });
+  }, [item, priceCents]);
 
   const range = hydrated ? estimateDelivery(leadTimeDays, "") : null;
   const color = colors.find((c) => c.id === colorId);
@@ -96,7 +102,10 @@ export function ProductBuy({
                   name="color"
                   value={c.id}
                   checked={c.id === colorId}
-                  onChange={() => setColorId(c.id)}
+                  onChange={() => {
+                    setColorId(c.id);
+                    track("select_color", { item, color: c.id });
+                  }}
                   aria-label={c.name}
                   className="peer sr-only"
                 />

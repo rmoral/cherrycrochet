@@ -5,7 +5,7 @@ import "@fontsource-variable/nunito";
 import "../globals.css";
 import { brand, isLocale, locales, siteUrl } from "@/lib/config";
 import { getDict } from "@/lib/i18n";
-import { AnnounceBar, Footer, Header } from "@/components/Chrome";
+import { AnalyticsScript } from "@/components/Analytics";
 
 export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 
@@ -38,14 +38,12 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const t = getDict(locale);
+  // La cabecera y el pie los pone cada grupo: (shop) la tienda completa, (checkout) la mínima.
   return (
     <html lang={locale}>
       <body className="flex min-h-dvh flex-col antialiased md:text-[17px]">
-        <AnnounceBar locale={locale} t={t} />
-        <Header locale={locale} t={t} />
-        <main className="flex-1">{children}</main>
-        <Footer locale={locale} t={t} />
+        {children}
+        <AnalyticsScript />
       </body>
     </html>
   );
